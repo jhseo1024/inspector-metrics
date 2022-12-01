@@ -21,10 +21,11 @@ export interface Time {
  * @param {Time} two time sample
  * @returns {number} a duration in nanoseconds
  */
-export function diff (one: Time, two: Time): number {
+export function diff(one: Time, two: Time): number {
   if (!one || !two) {
     return 0
   }
+
   const oneValue: number = one.nanoseconds + one.milliseconds * 1000000
   const twoValue: number = two.nanoseconds + two.milliseconds * 1000000
   return twoValue - oneValue
@@ -45,7 +46,7 @@ export abstract class Clock {
    * @returns {Time}
    * @memberof Clock
    */
-  public abstract time (): Time
+  public abstract time(): Time
 }
 
 /**
@@ -62,7 +63,7 @@ export class StdClock extends Clock {
    * @returns {Time}
    * @memberof StdClock
    */
-  public time (): Time {
+  public time(): Time {
     const time = {
       milliseconds: Date.now(),
       nanoseconds: 0

@@ -29,25 +29,28 @@ export interface MeasurementPoint {
   /**
    * Measurement is the Influx measurement name.
    */
-  measurement: string;
+  measurement: string
+  
   /**
    * Tags is the list of tag values to insert.
    */
   tags: {
-      [name: string]: string;
-  };
+    [name: string]: string
+  }
+
   /**
    * Fields is the list of field values to insert.
    */
   fields: {
-      [name: string]: any;
-  };
+    [name: string]: any
+  }
+
   /**
    * Timestamp tags this measurement with a date. This can be a Date object,
    * in which case we'll adjust it to the desired precision, or a numeric
    * string or number, in which case it gets passed directly to Influx.
    */
-  timestamp: Date | string | number;
+  timestamp: Date | string | number
 }
 
 /**
@@ -124,7 +127,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @type {*}
    * @memberof InfluxMetricReporter
    */
-  private readonly logMetadata: any;
+  private readonly logMetadata: any
 
   /**
    * Creates an instance of InfluxMetricReporter.
@@ -132,7 +135,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @param {string} [reporterType] the type of the reporter implementation - for internal use
    * @memberof InfluxMetricReporter
    */
-  public constructor ({
+  public constructor({
     sender,
     log = console,
     reportInterval = 1000,
@@ -143,7 +146,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     clusterOptions = new DefaultClusterOptions(),
     tags = new Map()
   }: InfluxMetricReporterOptions,
-  reporterType?: string) {
+    reporterType?: string) {
     super({
       clock,
       clusterOptions,
@@ -169,7 +172,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {Logger}
    * @memberof InfluxMetricReporter
    */
-  public getLog (): Logger {
+  public getLog(): Logger {
     return this.options.log
   }
 
@@ -179,7 +182,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @param {(Logger | null)} log
    * @memberof InfluxMetricReporter
    */
-  public setLog (log: Logger | null): void {
+  public setLog(log: Logger | null): void {
     this.options.log = log
   }
 
@@ -189,7 +192,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {Promise<this>}
    * @memberof ScheduledMetricReporter
    */
-  public async start (): Promise<this> {
+  public async start(): Promise<this> {
     await this.options.sender.init()
     return await super.start()
   }
@@ -246,7 +249,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @protected
    * @memberof InfluxMetricReporter
    */
-  protected async report (): Promise<OverallReportContext> {
+  protected async report(): Promise<OverallReportContext> {
     const senderReady = await this.options.sender.isReady()
     if (senderReady) {
       return await super.report()
@@ -266,7 +269,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {Promise<any>}
    * @memberof InfluxMetricReporter
    */
-  protected async handleResults (
+  protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
     date: Date,
@@ -306,7 +309,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {T}
    * @memberof InfluxMetricReporter
    */
-  protected reportCounter (
+  protected reportCounter(
     counter: MonotoneCounter | Counter,
     ctx: MetricSetReportContext<MonotoneCounter | Counter>): MeasurementPoint {
     const value = counter.getCount()
@@ -336,7 +339,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {T}
    * @memberof InfluxMetricReporter
    */
-  protected reportGauge (gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): MeasurementPoint {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): MeasurementPoint {
     const value = gauge.getValue()
     if (!value || isNaN(value)) {
       return null
@@ -364,7 +367,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {T}
    * @memberof InfluxMetricReporter
    */
-  protected reportHistogram (histogram: Histogram, ctx: MetricSetReportContext<Histogram>): MeasurementPoint {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): MeasurementPoint {
     const value = histogram.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -403,7 +406,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {T}
    * @memberof InfluxMetricReporter
    */
-  protected reportMeter (meter: Meter, ctx: MetricSetReportContext<Meter>): MeasurementPoint {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): MeasurementPoint {
     const value = meter.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -435,7 +438,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {T}
    * @memberof InfluxMetricReporter
    */
-  protected reportTimer (timer: Timer, ctx: MetricSetReportContext<Timer>): MeasurementPoint {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): MeasurementPoint {
     const value = timer.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -477,7 +480,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {string}
    * @memberof InfluxMetricReporter
    */
-  private getFieldNamePrefix (metric: Metric): string {
+  private getFieldNamePrefix(metric: Metric): string {
     if (metric.getGroup()) {
       return `${metric.getName()}.`
     }
@@ -492,7 +495,7 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
    * @returns {string}
    * @memberof InfluxMetricReporter
    */
-  private getMeasurementName (metric: Metric): string {
+  private getMeasurementName(metric: Metric): string {
     if (metric.getGroup()) {
       return metric.getGroup()
     }

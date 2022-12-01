@@ -24,7 +24,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @type {Metric[]}
    * @memberof V8EventLoop
    */
-  private readonly metrics: Metric[] = [];
+  private readonly metrics: Metric[] = []
   /**
    * Holds the event-loop lag in microseconds.
    *
@@ -32,7 +32,8 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @type {SimpleGauge}
    * @memberof V8EventLoop
    */
-  private readonly eventLoopLag: SimpleGauge;
+  private readonly eventLoopLag: SimpleGauge
+  
   /**
    * The timer reference from the scheduler.
    *
@@ -40,7 +41,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @type {NodeJS.Timer}
    * @memberof V8EventLoop
    */
-  private readonly timer: NodeJS.Timer;
+  private readonly timer: NodeJS.Timer
 
   /**
    * Creates an instance of V8EventLoop.
@@ -49,8 +50,9 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @param {Scheduler} [scheduler=setInterval]
    * @memberof V8EventLoop
    */
-  public constructor (name: string, scheduler: Scheduler = setInterval) {
+  public constructor(name: string, scheduler: Scheduler = setInterval) {
     super()
+
     this.name = name
 
     this.eventLoopLag = new SimpleGauge(
@@ -69,7 +71,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    *
    * @memberof V8EventLoop
    */
-  public stop (): void {
+  public stop(): void {
     if (this.timer) {
       this.timer.unref()
     }
@@ -81,7 +83,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @returns {Map<string, Metric>}
    * @memberof V8EventLoop
    */
-  public getMetrics (): Map<string, Metric> {
+  public getMetrics(): Map<string, Metric> {
     const map: Map<string, Metric> = new Map()
     this.metrics.forEach((metric) => map.set(metric.getName(), metric))
     return map
@@ -93,7 +95,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @returns {Metric[]}
    * @memberof V8EventLoop
    */
-  public getMetricList (): Metric[] {
+  public getMetricList(): Metric[] {
     return this.metrics
   }
 
@@ -104,7 +106,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof V8EventLoop
    */
-  public setGroup (group: string): this {
+  public setGroup(group: string): this {
     this.group = group
     this.eventLoopLag.setGroup(group)
     return this
@@ -118,7 +120,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof V8EventLoop
    */
-  public setTag (name: string, value: string): this {
+  public setTag(name: string, value: string): this {
     this.tagMap.set(name, value)
     this.eventLoopLag.setTag(name, value)
     return this
@@ -131,7 +133,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof V8EventLoop
    */
-  public removeTag (name: string): this {
+  public removeTag(name: string): this {
     this.tagMap.delete(name)
     this.eventLoopLag.removeTag(name)
     return this
@@ -144,7 +146,7 @@ export class V8EventLoop extends BaseMetric implements MetricSet {
    * @param {[number, number]} start
    * @memberof V8EventLoop
    */
-  private reportEventloopLag (start: [number, number]): void {
+  private reportEventloopLag(start: [number, number]): void {
     const delta = process.hrtime(start)
     const nanosec = delta[0] * 1e9 + delta[1]
     this.eventLoopLag.setValue(nanosec)

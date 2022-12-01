@@ -17,6 +17,7 @@ export interface PrometheusReporterOptions extends MetricReporterOptions {
    * @memberof PrometheusReporterOptions
    */
   readonly includeTimestamp?: boolean
+
   /**
    * indicates if comments like HELP and TYPE should be emitted
    *
@@ -24,6 +25,7 @@ export interface PrometheusReporterOptions extends MetricReporterOptions {
    * @memberof PrometheusReporterOptions
    */
   readonly emitComments?: boolean
+
   /**
    * indicates if the untyped should always be used
    *
@@ -31,6 +33,7 @@ export interface PrometheusReporterOptions extends MetricReporterOptions {
    * @memberof PrometheusReporterOptions
    */
   readonly useUntyped?: boolean
+
   /**
    * Options for clustering support.
    *
@@ -38,6 +41,7 @@ export interface PrometheusReporterOptions extends MetricReporterOptions {
    * @memberof PrometheusReporterOptions
    */
   clusterOptions?: PrometheusClusterOptions<any>
+
   /**
    * Minimal logger interface to report failures.
    *

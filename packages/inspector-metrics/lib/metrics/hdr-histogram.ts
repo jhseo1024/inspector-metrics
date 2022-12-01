@@ -29,7 +29,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @param {*} reference
    * @memberof HdrSnapshot
    */
-  public constructor (private readonly reference: any) {
+  public constructor(private readonly reference: any) {
   }
 
   /**
@@ -39,7 +39,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public get75thPercentile (): number {
+  public get75thPercentile(): number {
     return this.reference.histogram.percentile(75)
   }
 
@@ -50,7 +50,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public get95thPercentile (): number {
+  public get95thPercentile(): number {
     return this.reference.histogram.percentile(95)
   }
 
@@ -61,7 +61,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public get98thPercentile (): number {
+  public get98thPercentile(): number {
     return this.reference.histogram.percentile(98)
   }
 
@@ -72,7 +72,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public get999thPercentile (): number {
+  public get999thPercentile(): number {
     return this.reference.histogram.percentile(99.9)
   }
 
@@ -83,7 +83,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public get99thPercentile (): number {
+  public get99thPercentile(): number {
     return this.reference.histogram.percentile(99)
   }
 
@@ -94,7 +94,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getMedian (): number {
+  public getMedian(): number {
     return this.reference.histogram.percentile(50)
   }
 
@@ -105,7 +105,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getMax (): number {
+  public getMax(): number {
     return this.reference.histogram.max() || 0
   }
 
@@ -116,7 +116,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getMin (): number {
+  public getMin(): number {
     return this.reference.histogram.min() || 0
   }
 
@@ -126,7 +126,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number[]}
    * @memberof HdrSnapshot
    */
-  public get values (): number[] {
+  public get values(): number[] {
     return []
   }
 
@@ -136,7 +136,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number[]}
    * @memberof HdrSnapshot
    */
-  public getValues (): number[] {
+  public getValues(): number[] {
     return []
   }
 
@@ -146,7 +146,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public size (): number {
+  public size(): number {
     return this.reference.getCount()
   }
 
@@ -157,7 +157,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getMean (): number {
+  public getMean(): number {
     return this.reference.histogram.mean() || 0
   }
 
@@ -168,7 +168,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getStdDev (): number {
+  public getStdDev(): number {
     return this.reference.histogram.stddev() || 0
   }
 
@@ -179,7 +179,7 @@ export class HdrSnapshot implements Snapshot, SerializedSnapshot {
    * @returns {number}
    * @memberof HdrSnapshot
    */
-  public getValue (quantile: number): number {
+  public getValue(quantile: number): number {
     return this.reference.histogram.percentile(quantile * 100.0)
   }
 }
@@ -205,6 +205,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @memberof HdrHistogram
    */
   private readonly histogram: any
+  
   /**
    * Snapshot instance.
    *
@@ -227,7 +228,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @param {Buckets} [buckets=new Buckets()]
    * @memberof HdrHistogram
    */
-  public constructor (
+  public constructor(
     lowest: number = 1,
     max: number = 100,
     figures: number = 3,
@@ -238,7 +239,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
 
     if (!NativeHistogram) {
       throw new Error("Module 'native-hdr-histogram' not found. " +
-                            "Please install the optional dependencies of 'inspector-metrics' module.")
+        "Please install the optional dependencies of 'inspector-metrics' module.")
     }
 
     this.histogram = new NativeHistogram(lowest, max, figures)
@@ -252,7 +253,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @type {SerializedSnapshot}
    * @memberof HdrHistogram
    */
-  public get snapshot (): SerializedSnapshot {
+  public get snapshot(): SerializedSnapshot {
     return this.hdrSnapshot
   }
 
@@ -262,7 +263,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @returns {Snapshot}
    * @memberof HdrHistogram
    */
-  public getSnapshot (): Snapshot {
+  public getSnapshot(): Snapshot {
     return this.hdrSnapshot
   }
 
@@ -273,7 +274,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @returns {this}
    * @memberof HdrHistogram
    */
-  public update (value: number): this {
+  public update(value: number): this {
     this.count++
     this.sumInternal.add(value)
     for (const boundary of this.bucketsInternal.boundaries) {
@@ -292,7 +293,7 @@ export class HdrHistogram extends Histogram implements BucketCounting, Counting,
    * @returns {*}
    * @memberof HdrHistogram
    */
-  public toJSON (): any {
+  public toJSON(): any {
     const json = super.toJSON()
     json.counts = {}
     for (const [key, value] of this.bucketCounts) {

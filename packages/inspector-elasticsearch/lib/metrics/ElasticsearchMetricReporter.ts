@@ -29,7 +29,7 @@ import {
  * e.g. name of the index, metric type, etc.
  */
 export type MetricInfoDeterminator =
-  (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => string;
+  (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => string
 
 /**
  * Interface for building a document for a metric.
@@ -39,7 +39,7 @@ export type MetricDocumentBuilder = (
   metric: Metric,
   type: MetricType,
   date: Date,
-  tags: Tags) => {};
+  tags: Tags) => {}
 
 /**
  * Options for {@link ElasticsearchMetricReporter}.
@@ -100,7 +100,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {MetricInfoDeterminator}
    * @memberof ElasticsearchMetricReporter
    */
-  public static defaultTypeDeterminator (): MetricInfoDeterminator {
+  public static defaultTypeDeterminator(): MetricInfoDeterminator {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => 'metric'
   }
 
@@ -112,7 +112,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {MetricInfoDeterminator}
    * @memberof ElasticsearchMetricReporter
    */
-  public static dailyIndex (baseName: string): MetricInfoDeterminator {
+  public static dailyIndex(baseName: string): MetricInfoDeterminator {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => {
       const day = date.getDate()
       const dayPrefix: string = (day >= 10) ? '' : '0'
@@ -145,7 +145,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {MetricDocumentBuilder}
    * @memberof ElasticsearchMetricReporter
    */
-  public static defaultDocumentBuilder (): MetricDocumentBuilder {
+  public static defaultDocumentBuilder(): MetricDocumentBuilder {
     return (
       registry: MetricRegistry,
       metric: Metric,
@@ -186,7 +186,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getMonotoneCounterValues (counter: MonotoneCounter): {} {
+  public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
     const count = counter.getCount()
     if (!count || isNaN(count)) {
       return null
@@ -202,7 +202,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getCounterValues (counter: Counter): {} {
+  public static getCounterValues(counter: Counter): {} {
     const count = counter.getCount()
     if (!count || isNaN(count)) {
       return null
@@ -218,7 +218,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getGaugeValue (gauge: Gauge<any>): {} {
+  public static getGaugeValue(gauge: Gauge<any>): {} {
     const value = gauge.getValue()
     if ((!value && value !== 0) || Number.isNaN(value)) {
       return null
@@ -237,7 +237,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getHistogramValues (histogram: Histogram): {} {
+  public static getHistogramValues(histogram: Histogram): {} {
     const value = histogram.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -268,7 +268,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getMeterValues (meter: Meter): {} {
+  public static getMeterValues(meter: Meter): {} {
     const value = meter.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -292,7 +292,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {{}}
    * @memberof ElasticsearchMetricReporter
    */
-  public static getTimerValues (timer: Timer): {} {
+  public static getTimerValues(timer: Timer): {} {
     const value = timer.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -327,7 +327,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {number}
    * @memberof ElasticsearchMetricReporter
    */
-  private static getNumber (value: number): number {
+  private static getNumber(value: number): number {
     if (isNaN(value)) {
       return 0
     }
@@ -341,7 +341,8 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @type {*}
    * @memberof ElasticsearchMetricReporter
    */
-  private readonly logMetadata: any;
+  private readonly logMetadata: any
+  
   /**
    * Elasticsearch client used to do reporting.
    *
@@ -349,14 +350,14 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @type {Client}
    * @memberof ElasticsearchMetricReporter
    */
-  private readonly client: Client;
+  private readonly client: Client
 
   /**
    * Creates an instance of ElasticsearchMetricReporter.
    *
    * @param {string} [reporterType] the type of the reporter implementation - for internal use
    */
-  public constructor (
+  public constructor(
     {
       clientOptions,
       metricDocumentBuilder = ElasticsearchMetricReporter.defaultDocumentBuilder(),
@@ -402,7 +403,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Logger}
    * @memberof ElasticsearchMetricReporter
    */
-  public getLog (): Logger {
+  public getLog(): Logger {
     return this.options.log
   }
 
@@ -412,7 +413,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @param {Logger} log
    * @memberof ElasticsearchMetricReporter
    */
-  public setLog (log: Logger): void {
+  public setLog(log: Logger): void {
     this.options.log = log
   }
 
@@ -448,7 +449,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Promise<void>}
    * @memberof ElasticsearchMetricReporter
    */
-  public async flushEvents (): Promise<void> {
+  public async flushEvents(): Promise<void> {
   }
 
   /**
@@ -463,7 +464,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Promise<void>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected async handleResults (
+  protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
     date: Date,
@@ -506,7 +507,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportMetric (
+  protected reportMetric(
     metric: Metric, ctx: MetricSetReportContext<Metric>): Array<{}> {
     const document = this.options.metricDocumentBuilder(
       ctx.registry, metric, ctx.type, ctx.date, this.buildTags(ctx.registry, metric))
@@ -530,7 +531,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportCounter (
+  protected reportCounter(
     counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Array<{}> {
     return this.reportMetric(counter, ctx)
   }
@@ -544,7 +545,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportGauge (gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Array<{}> {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Array<{}> {
     return this.reportMetric(gauge, ctx)
   }
 
@@ -557,7 +558,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportHistogram (histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Array<{}> {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Array<{}> {
     return this.reportMetric(histogram, ctx)
   }
 
@@ -570,7 +571,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportMeter (meter: Meter, ctx: MetricSetReportContext<Meter>): Array<{}> {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Array<{}> {
     return this.reportMetric(meter, ctx)
   }
 
@@ -583,7 +584,7 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
    * @returns {Array<{}>}
    * @memberof ElasticsearchMetricReporter
    */
-  protected reportTimer (timer: Timer, ctx: MetricSetReportContext<Timer>): Array<{}> {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Array<{}> {
     return this.reportMetric(timer, ctx)
   }
 }

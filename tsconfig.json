@@ -19,10 +19,13 @@
             "node_modules/reflect-metadata"
         ],
         "types": [
-            "mocha", "chai", "node"
+            "mocha",
+            "chai",
+            "node"
         ],
         "lib": [
-            "dom", "es6"
+            "dom",
+            "es6"
         ],
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,

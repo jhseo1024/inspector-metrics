@@ -19,7 +19,8 @@ export class Influxdb2Sender implements Sender {
    * @type {InfluxDB}
    * @memberof Influxdb2Sender
    */
-  private readonly db: InfluxDB;
+  private readonly db: InfluxDB
+
   /**
    * Write Api instance.
    *
@@ -27,7 +28,8 @@ export class Influxdb2Sender implements Sender {
    * @type {WriteApi}
    * @memberof Influxdb2Sender
    */
-  private readonly writeApi: WriteApi;
+  private readonly writeApi: WriteApi
+
   /**
    * Default setting for data retention.
    *
@@ -35,7 +37,8 @@ export class Influxdb2Sender implements Sender {
    * @type {RetentionRules}
    * @memberof Influxdb2Sender
    */
-  private readonly retentionRules: RetentionRules;
+  private readonly retentionRules: RetentionRules
+
   /**
    * Name of the bucket.
    *
@@ -43,7 +46,8 @@ export class Influxdb2Sender implements Sender {
    * @type {string}
    * @memberof Influxdb2Sender
    */
-  private readonly bucket: string;
+  private readonly bucket: string
+
   /**
    * Name of the organization.
    *
@@ -51,7 +55,8 @@ export class Influxdb2Sender implements Sender {
    * @type {string}
    * @memberof Influxdb2Sender
    */
-   private readonly org: string;
+  private readonly org: string
+
   /**
    * Indicates if he sender is ready to report metrics.
    *
@@ -59,7 +64,7 @@ export class Influxdb2Sender implements Sender {
    * @type {boolean}
    * @memberof Influxdb2Sender
    */
-  private ready: boolean = false;
+  private ready: boolean = false
 
   /**
    * Creates an instance of Influxdb2Sender.
@@ -72,7 +77,7 @@ export class Influxdb2Sender implements Sender {
    * @param {Partial<WriteOptions>} [writeOptions]
    * @memberof Influxdb2Sender
    */
-  public constructor (
+  public constructor(
     config: ClientOptions | string,
     org: string,
     bucket: string,
@@ -91,7 +96,7 @@ export class Influxdb2Sender implements Sender {
    *
    * @memberof Influxdb2Sender
    */
-  public async init (): Promise<any> {
+  public async init(): Promise<any> {
     const orgsAPI = new OrgsAPI(this.db)
     const {
       orgs: [org],
@@ -125,7 +130,7 @@ export class Influxdb2Sender implements Sender {
    * @returns {Promise<boolean>}
    * @memberof Influxdb2Sender
    */
-  public async isReady (): Promise<boolean> {
+  public async isReady(): Promise<boolean> {
     return this.ready
   }
 
@@ -135,21 +140,21 @@ export class Influxdb2Sender implements Sender {
    * @param {MeasurementPoint[]} points
    * @memberof Influxdb2Sender
    */
-  public async send (points: MeasurementPoint[]): Promise<void> {
+  public async send(points: MeasurementPoint[]): Promise<void> {
     await this.writeApi.writePoints(points.map(point => {
-        const newPoint = new Point(point.measurement)
-          .timestamp(point.timestamp)
+      const newPoint = new Point(point.measurement)
+        .timestamp(point.timestamp)
 
-        for (const fieldName in point.fields) {
-          newPoint.fields[fieldName] = `${point.fields[fieldName]}`
-        }
+      for (const fieldName in point.fields) {
+        newPoint.fields[fieldName] = `${point.fields[fieldName]}`
+      }
 
-        for (const tag in point.tags) {
-          newPoint.tag(tag, point.tags[tag])
-        }
+      for (const tag in point.tags) {
+        newPoint.tag(tag, point.tags[tag])
+      }
 
-        return newPoint
-      }))
+      return newPoint
+    }))
     await this.writeApi.flush()
   }
 }

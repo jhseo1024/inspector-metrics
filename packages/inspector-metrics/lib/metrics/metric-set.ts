@@ -10,15 +10,14 @@ import { Metric } from './model/metric'
  * @extends {Metric}
  */
 export interface MetricSet extends Metric {
-
-  /**
-   * Gets a mapping from names to metric instances.
-   *
-   * @deprecated since version 1.3 - use {@link getMetricList} instead
-   * @returns {Map<string, Metric>}
-   * @memberof MetricSet
-   */
-  getMetrics(): Map<string, Metric>
+  // /**
+  //  * Gets a mapping from names to metric instances.
+  //  *
+  //  * @deprecated since version 1.3 - use {@link getMetricList} instead
+  //  * @returns {Map<string, Metric>}
+  //  * @memberof MetricSet
+  //  */
+  // getMetrics(): Map<string, Metric>
 
   /**
    * Gets a list of all {@link Metric} instances.

@@ -23,6 +23,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private static readonly AVG_1_MINUTE = ExponentiallyWeightedMovingAverage.ALPHA_1_MINUTE_1_SECOND_SAMPLERATE
+
   /**
    * Alpha value for 5 mins within a {@link ExponentiallyWeightedMovingAverage}.
    *
@@ -31,6 +32,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private static readonly AVG_5_MINUTE = ExponentiallyWeightedMovingAverage.ALPHA_5_MINUTE_1_SECOND_SAMPLERATE
+
   /**
    * Alpha value for 15 mins within a {@link ExponentiallyWeightedMovingAverage}.
    *
@@ -39,6 +41,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private static readonly AVG_15_MINUTE = ExponentiallyWeightedMovingAverage.ALPHA_15_MINUTE_1_SECOND_SAMPLERATE
+
   /**
    * 1 second in nanoseconds.
    *
@@ -56,6 +59,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly clock: Clock
+
   /**
    * Starttime as a reference for calculating the mean-rate.
    *
@@ -64,6 +68,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly startTime: Time
+
   /**
    * Timestamp used to determine when a new update of the 1, 5 and 15 mins averages is needed.
    *
@@ -72,6 +77,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private lastTime: Time
+
   /**
    * Continuous counter incremented in the {@link Meter#mark} method.
    *
@@ -80,6 +86,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private countInternal: number = 0
+
   /**
    * Number of samples per second.
    *
@@ -88,6 +95,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly sampleRate: number
+
   /**
    * Max age of the last update in nanoseconds.
    *
@@ -96,6 +104,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly interval: number
+
   /**
    * Moving average for 1 minute.
    *
@@ -104,6 +113,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly avg1Minute: MovingAverage = new ExponentiallyWeightedMovingAverage(Meter.AVG_1_MINUTE, 1, SECOND)
+
   /**
    * Moving average for 5 minutes.
    *
@@ -112,6 +122,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @memberof Meter
    */
   private readonly avg5Minute: MovingAverage = new ExponentiallyWeightedMovingAverage(Meter.AVG_5_MINUTE, 1, SECOND)
+  
   /**
    * Moving average for 15 minutes.
    *
@@ -130,7 +141,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @param {string} [description] optional metric description.
    * @memberof Meter
    */
-  public constructor (clock: Clock, sampleRate: number, name?: string, description?: string) {
+  public constructor(clock: Clock, sampleRate: number, name?: string, description?: string) {
     super()
     this.name = name
     this.description = description
@@ -148,7 +159,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @type {number}
    * @memberof Meter
    */
-  public get count (): number {
+  public get count(): number {
     return this.getCount()
   }
 
@@ -159,7 +170,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @type {number}
    * @memberof Meter
    */
-  public get meanRate (): number {
+  public get meanRate(): number {
     return this.getMeanRate()
   }
 
@@ -170,7 +181,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @type {MeteredRates}
    * @memberof Meter
    */
-  public get rates (): MeteredRates {
+  public get rates(): MeteredRates {
     return {
       15: this.get15MinuteRate(),
       5: this.get5MinuteRate(),
@@ -185,7 +196,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {this}
    * @memberof Meter
    */
-  public mark (value: number): this {
+  public mark(value: number): this {
     this.tickIfNeeded()
     this.countInternal += value
     this.avg15Minute.update(value)
@@ -200,7 +211,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {number}
    * @memberof Meter
    */
-  public getCount (): number {
+  public getCount(): number {
     return this.countInternal
   }
 
@@ -210,7 +221,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {number}
    * @memberof Meter
    */
-  public get15MinuteRate (): number {
+  public get15MinuteRate(): number {
     this.tickIfNeeded()
     return this.avg15Minute.getAverage(SECOND)
   }
@@ -221,7 +232,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {number}
    * @memberof Meter
    */
-  public get5MinuteRate (): number {
+  public get5MinuteRate(): number {
     this.tickIfNeeded()
     return this.avg5Minute.getAverage(SECOND)
   }
@@ -232,7 +243,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {number}
    * @memberof Meter
    */
-  public get1MinuteRate (): number {
+  public get1MinuteRate(): number {
     this.tickIfNeeded()
     return this.avg1Minute.getAverage(SECOND)
   }
@@ -243,7 +254,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {number} either 0 or the mean rate.
    * @memberof Meter
    */
-  public getMeanRate (): number {
+  public getMeanRate(): number {
     if (this.countInternal === 0) {
       return 0.0
     } else {
@@ -258,7 +269,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @returns {*}
    * @memberof Meter
    */
-  public toJSON (): any {
+  public toJSON(): any {
     const json = super.toJSON()
     json.count = this.countInternal
     json.meanRate = this.meanRate
@@ -273,7 +284,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @param {number} ticks number of updates.
    * @memberof Meter
    */
-  private tick (ticks: number): void {
+  private tick(ticks: number): void {
     while (ticks-- > 0) {
       this.avg15Minute.tick()
       this.avg5Minute.tick()
@@ -287,7 +298,7 @@ export class Meter extends BaseMetric implements Metered, SerializableMetered {
    * @private
    * @memberof Meter
    */
-  private tickIfNeeded (): void {
+  private tickIfNeeded(): void {
     const currentTime: Time = this.clock.time()
     const age: number = diff(this.lastTime, currentTime)
     if (age > this.interval) {

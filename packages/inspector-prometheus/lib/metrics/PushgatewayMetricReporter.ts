@@ -37,6 +37,7 @@ export interface PushgatewayReporterOptions extends ScheduledMetricReporterOptio
    * @memberof PushgatewayReporterOptions
    */
   readonly host?: string
+
   /**
    * The port of the pushgateway.
    *
@@ -44,6 +45,7 @@ export interface PushgatewayReporterOptions extends ScheduledMetricReporterOptio
    * @memberof PushgatewayReporterOptions
    */
   readonly port?: number
+
   /**
    * The id of the job.
    *
@@ -51,6 +53,7 @@ export interface PushgatewayReporterOptions extends ScheduledMetricReporterOptio
    * @memberof PushgatewayReporterOptions
    */
   readonly job?: string
+
   /**
    * The id of this instance.
    *
@@ -58,6 +61,7 @@ export interface PushgatewayReporterOptions extends ScheduledMetricReporterOptio
    * @memberof PushgatewayReporterOptions
    */
   readonly instance?: string
+
   /**
    * The reporter use ot generate the metrics string.
    *
@@ -65,6 +69,7 @@ export interface PushgatewayReporterOptions extends ScheduledMetricReporterOptio
    * @memberof PushgatewayReporterOptions
    */
   readonly reporter?: PrometheusMetricReporter
+  
   /**
    * A simplified logger interface to log response code and message of the pushgateway.
    *
@@ -93,7 +98,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @param {string} [reporterType] the type of the reporter implementation - for internal use
    * @memberof PushgatewayMetricReporter
    */
-  public constructor ({
+  public constructor({
     clock = new StdClock(),
     host = '',
     instance = '',
@@ -108,7 +113,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
     unit = MILLISECOND,
     clusterOptions = new DisabledClusterOptions()
   }: PushgatewayReporterOptions,
-  reporterType?: string) {
+    reporterType?: string) {
     super({
       clock,
       clusterOptions,
@@ -148,7 +153,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @returns {Promise<void>}
    * @memberof PushgatewayMetricReporter
    */
-  public async flushEvents (): Promise<void> {
+  public async flushEvents(): Promise<void> {
   }
 
   /**
@@ -159,7 +164,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected async report (): Promise<OverallReportContext> {
+  protected async report(): Promise<OverallReportContext> {
     const ctx = this.createOverallReportContext()
     const payload = await this.options.reporter.getMetricsString()
 
@@ -176,7 +181,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @param {string} payload
    * @memberof PushgatewayMetricReporter
    */
-  protected sendPayload (payload: string): void {
+  protected sendPayload(payload: string): void {
     const options = {
       headers: {
         'Content-Length': payload.length,
@@ -203,7 +208,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected async handleResults (
+  protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
     date: Date,
@@ -217,7 +222,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected reportCounter (
+  protected reportCounter(
     counter: MonotoneCounter | Counter,
     ctx: MetricSetReportContext<MonotoneCounter | Counter>): void {
   }
@@ -228,7 +233,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected reportGauge (gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): void {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): void {
   }
 
   /**
@@ -237,7 +242,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected reportHistogram (histogram: Histogram, ctx: MetricSetReportContext<Histogram>): void {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): void {
   }
 
   /**
@@ -246,7 +251,7 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected reportMeter (meter: Meter, ctx: MetricSetReportContext<Meter>): void {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): void {
   }
 
   /**
@@ -255,6 +260,6 @@ export class PushgatewayMetricReporter extends ScheduledMetricReporter<Pushgatew
    * @protected
    * @memberof PushgatewayMetricReporter
    */
-  protected reportTimer (timer: Timer, ctx: MetricSetReportContext<Timer>): void {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): void {
   }
 }

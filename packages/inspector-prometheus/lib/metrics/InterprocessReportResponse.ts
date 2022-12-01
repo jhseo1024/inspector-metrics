@@ -18,6 +18,7 @@ export interface InterprocessReportResponse extends InterprocessMessage {
    * @memberof InterprocessReportResponse
    */
   readonly id: string
+
   /**
    * The rendered metrics-string.
    *

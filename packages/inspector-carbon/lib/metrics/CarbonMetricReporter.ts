@@ -91,7 +91,8 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @type {*}
    * @memberof CarbonMetricReporter
    */
-  private readonly logMetadata: any;
+  private readonly logMetadata: any
+
   /**
    * Graphite / carbon client instance.
    *
@@ -99,7 +100,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @type {*}
    * @memberof CarbonMetricReporter
    */
-  private client: any;
+  private client: any
 
   /**
    * Creates an instance of CarbonMetricReporter.
@@ -107,7 +108,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @param {string} [reporterType] the type of the reporter implementation - for internal use
    * @memberof CarbonMetricReporter
    */
-  public constructor ({
+  public constructor({
     host,
     log = console,
     reportInterval = 1000,
@@ -118,7 +119,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
     tags = new Map(),
     clusterOptions = new DefaultClusterOptions()
   }: CarbonMetricReporterOptions,
-  reporterType?: string) {
+    reporterType?: string) {
     super({
       clock,
       clusterOptions,
@@ -144,7 +145,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {Logger}
    * @memberof CarbonMetricReporter
    */
-  public getLog (): Logger {
+  public getLog(): Logger {
     return this.options.log
   }
 
@@ -154,7 +155,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @param {Logger} log
    * @memberof CarbonMetricReporter
    */
-  public setLog (log: Logger): void {
+  public setLog(log: Logger): void {
     this.options.log = log
   }
 
@@ -198,7 +199,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {Promise<void>}
    * @memberof CarbonMetricReporter
    */
-  public async flushEvents (): Promise<void> {
+  public async flushEvents(): Promise<void> {
   }
 
   /**
@@ -207,7 +208,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {Promise<this>}
    * @memberof CarbonMetricReporter
    */
-  public async start (): Promise<this> {
+  public async start(): Promise<this> {
     this.client = graphite.createClient(this.options.host)
     return await super.start()
   }
@@ -218,7 +219,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {Promise<this>}
    * @memberof CarbonMetricReporter
    */
-  public async stop (): Promise<this> {
+  public async stop(): Promise<this> {
     await super.stop()
     if (this.client) {
       await this.client.end()
@@ -238,7 +239,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {Promise<any>}
    * @memberof CarbonMetricReporter
    */
-  protected async handleResults (
+  protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
     timestamp: Date,
@@ -277,7 +278,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {CarbonData}
    * @memberof CarbonMetricReporter
    */
-  protected reportCounter (
+  protected reportCounter(
     counter: MonotoneCounter | Counter,
     ctx: MetricSetReportContext<MonotoneCounter | Counter>): CarbonData {
     const value = counter.getCount()
@@ -307,7 +308,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {CarbonData}
    * @memberof CarbonMetricReporter
    */
-  protected reportGauge (gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): CarbonData {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): CarbonData {
     const value = gauge.getValue()
     if (!value || isNaN(value)) {
       return null
@@ -335,7 +336,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {CarbonData}
    * @memberof CarbonMetricReporter
    */
-  protected reportHistogram (histogram: Histogram, ctx: MetricSetReportContext<Histogram>): CarbonData {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): CarbonData {
     const value = histogram.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -374,7 +375,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {CarbonData}
    * @memberof CarbonMetricReporter
    */
-  protected reportMeter (meter: Meter, ctx: MetricSetReportContext<Meter>): CarbonData {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): CarbonData {
     const value = meter.getCount()
     if (value === undefined || value === null || isNaN(value)) {
       return null
@@ -406,7 +407,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {CarbonData}
    * @memberof CarbonMetricReporter
    */
-  protected reportTimer (timer: Timer, ctx: MetricSetReportContext<Timer>): CarbonData {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): CarbonData {
     const value = timer.getCount()
     if (!value || isNaN(value)) {
       return null
@@ -448,7 +449,7 @@ export class CarbonMetricReporter extends ScheduledMetricReporter<CarbonMetricRe
    * @returns {string}
    * @memberof CarbonMetricReporter
    */
-  protected getMetricName (metric: Metric): string {
+  protected getMetricName(metric: Metric): string {
     if (metric.getGroup()) {
       return `${metric.getGroup()}.${metric.getName()}`
     }

@@ -19,6 +19,7 @@ export interface InterprocessMessage {
    * @memberof InterprocessReportMessage
    */
   targetReporterType: string;
+
   /**
    * The type property of the message sent to the master process.
    *
@@ -43,6 +44,7 @@ export interface InterprocessReportMessage<T> extends InterprocessMessage {
    * @memberof InterprocessReportMessage
    */
   ctx: OverallReportContext;
+
   /**
    * Date from report function in forked process.
    *
@@ -50,6 +52,7 @@ export interface InterprocessReportMessage<T> extends InterprocessMessage {
    * @memberof InterprocessReportMessage
    */
   date: Date;
+
   /**
    * Tags from originating {@link MetricRegistry}.
    *
@@ -57,6 +60,7 @@ export interface InterprocessReportMessage<T> extends InterprocessMessage {
    * @memberof InterprocessReportMessage
    */
   tags: Tags;
+
   /**
    * Collection of metric reporting results from forked process.
    *
@@ -71,11 +75,11 @@ export interface InterprocessReportMessage<T> extends InterprocessMessage {
    * @memberof InterprocessReportMessage
    */
   metrics: {
-      counters: Array<ReportingResult<SerializableMetric, T>>;
-      gauges: Array<ReportingResult<SerializableMetric, T>>;
-      histograms: Array<ReportingResult<SerializableMetric, T>>;
-      meters: Array<ReportingResult<SerializableMetric, T>>;
-      monotoneCounters: Array<ReportingResult<SerializableMetric, T>>;
-      timers: Array<ReportingResult<SerializableMetric, T>>;
+    counters: Array<ReportingResult<SerializableMetric, T>>;
+    gauges: Array<ReportingResult<SerializableMetric, T>>;
+    histograms: Array<ReportingResult<SerializableMetric, T>>;
+    meters: Array<ReportingResult<SerializableMetric, T>>;
+    monotoneCounters: Array<ReportingResult<SerializableMetric, T>>;
+    timers: Array<ReportingResult<SerializableMetric, T>>;
   };
 }

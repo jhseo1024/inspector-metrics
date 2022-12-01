@@ -30,7 +30,7 @@ export class MetricRegistryListenerRegistration {
    * @param {MetricRegistry} registry
    * @memberof MetricRegistryListenerRegistration
    */
-  public constructor (private readonly listener: MetricRegistryListener, private readonly registry: MetricRegistry) {}
+  public constructor(private readonly listener: MetricRegistryListener, private readonly registry: MetricRegistry) { }
 
   /**
    * Removes the managed listener from the metric registry.
@@ -38,7 +38,7 @@ export class MetricRegistryListenerRegistration {
    * @returns {this}
    * @memberof MetricRegistryListenerRegistration
    */
-  public remove (): this {
+  public remove(): this {
     this.registry.removeListener(this.listener)
     return this
   }
@@ -59,6 +59,7 @@ export class MetricRegistration<T extends Metric> {
    * @memberof MetricRegistration
    */
   public metricRef: T
+  
   /**
    * The name the metric is registered with.
    *
@@ -73,7 +74,7 @@ export class MetricRegistration<T extends Metric> {
    * @param {T} metricRef
    * @memberof MetricRegistration
    */
-  public constructor (metricRef: T) {
+  public constructor(metricRef: T) {
     this.metricRef = metricRef
     this.name = metricRef.getName()
   }
@@ -96,7 +97,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is Counter}
    * @memberof MetricRegistry
    */
-  public static isCounter (instance: any): instance is Counter {
+  public static isCounter(instance: any): instance is Counter {
     return instance instanceof Counter || instance.metricRef instanceof Counter
   }
 
@@ -108,7 +109,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is MonotoneCounter}
    * @memberof MetricRegistry
    */
-  public static isMonotoneCounter (instance: any): instance is MonotoneCounter {
+  public static isMonotoneCounter(instance: any): instance is MonotoneCounter {
     return instance instanceof MonotoneCounter || instance.metricRef instanceof MonotoneCounter
   }
 
@@ -120,9 +121,9 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is MonotoneCounter}
    * @memberof MetricRegistry
    */
-  public static isPureMonotoneCounter (instance: any): instance is MonotoneCounter {
+  public static isPureMonotoneCounter(instance: any): instance is MonotoneCounter {
     return (instance instanceof MonotoneCounter || instance.metricRef instanceof MonotoneCounter) &&
-                !MetricRegistry.isCounter(instance)
+      !MetricRegistry.isCounter(instance)
   }
 
   /**
@@ -133,7 +134,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is Histogram}
    * @memberof MetricRegistry
    */
-  public static isHistogram (instance: any): instance is Histogram {
+  public static isHistogram(instance: any): instance is Histogram {
     return instance instanceof Histogram || instance.metricRef instanceof Histogram
   }
 
@@ -145,7 +146,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is Meter}
    * @memberof MetricRegistry
    */
-  public static isMeter (instance: any): instance is Meter {
+  public static isMeter(instance: any): instance is Meter {
     return instance instanceof Meter || instance.metricRef instanceof Meter
   }
 
@@ -157,7 +158,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is Timer}
    * @memberof MetricRegistry
    */
-  public static isTimer (instance: any): instance is Timer {
+  public static isTimer(instance: any): instance is Timer {
     return instance instanceof Timer || instance.metricRef instanceof Timer
   }
 
@@ -170,11 +171,11 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is Gauge<T>}
    * @memberof MetricRegistry
    */
-  public static isGauge<T> (instance: any): instance is Gauge<T> {
+  public static isGauge<T>(instance: any): instance is Gauge<T> {
     const directGauge: boolean = !!instance.getValue && instance.getValue instanceof Function
     const gaugeRegistration = !!instance.metricRef &&
-                                    !!instance.metricRef.getValue &&
-                                    instance.metricRef.getValue instanceof Function
+      !!instance.metricRef.getValue &&
+      instance.metricRef.getValue instanceof Function
     return directGauge || gaugeRegistration
   }
 
@@ -186,7 +187,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {instance is MetricSet}
    * @memberof MetricRegistry
    */
-  public static isMetricSet (instance: any): instance is MetricSet {
+  public static isMetricSet(instance: any): instance is MetricSet {
     return !!instance.getMetrics && instance.getMetrics instanceof Function
   }
 
@@ -201,7 +202,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {string}
    * @memberof MetricRegistry
    */
-  private static defaultNameFactory (baseName: string, metricName: string, metric: Metric): string {
+  private static defaultNameFactory(baseName: string, metricName: string, metric: Metric): string {
     return baseName + '.' + metricName
   }
 
@@ -246,7 +247,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {MetricRegistryListenerRegistration}
    * @memberof MetricRegistry
    */
-  public addListener (listener: MetricRegistryListener): MetricRegistryListenerRegistration {
+  public addListener(listener: MetricRegistryListener): MetricRegistryListenerRegistration {
     this.listeners.push(listener)
     return new MetricRegistryListenerRegistration(listener, this)
   }
@@ -258,7 +259,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public removeListener (listener: MetricRegistryListener): this {
+  public removeListener(listener: MetricRegistryListener): this {
     const index = this.listeners.indexOf(listener)
     if (index > -1) {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -274,7 +275,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public setNameFactory (nameFactory: NameFactory): this {
+  public setNameFactory(nameFactory: NameFactory): this {
     this.nameFactory = nameFactory
     return this
   }
@@ -285,7 +286,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Clock}
    * @memberof MetricRegistry
    */
-  public getDefaultClock (): Clock {
+  public getDefaultClock(): Clock {
     return this.defaultClock
   }
 
@@ -296,65 +297,65 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public setDefaultClock (defaultClock: Clock): this {
+  public setDefaultClock(defaultClock: Clock): this {
     this.defaultClock = defaultClock
     return this
   }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getCounterList} instead
-   */
-  public getCounters (): Map<string, Counter> {
-    const map: Map<string, Counter> = new Map()
-    this.metrics
-      .filter(MetricRegistry.isCounter)
-      .forEach((registration) => map.set(registration.name, registration.metricRef as Counter))
-    return map
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getCounterList} instead
+  //  */
+  // public getCounters(): Map<string, Counter> {
+  //   const map: Map<string, Counter> = new Map()
+  //   this.metrics
+  //     .filter(MetricRegistry.isCounter)
+  //     .forEach((registration) => map.set(registration.name, registration.metricRef as Counter))
+  //   return map
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getGaugeList} instead
-   */
-  public getGauges (): Map<string, Gauge<any>> {
-    const map: Map<string, Gauge<any>> = new Map()
-    this.metrics
-      .filter(MetricRegistry.isGauge)
-      .forEach((registration) => map.set(registration.name, registration.metricRef as Gauge<any>))
-    return map
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getGaugeList} instead
+  //  */
+  // public getGauges(): Map<string, Gauge<any>> {
+  //   const map: Map<string, Gauge<any>> = new Map()
+  //   this.metrics
+  //     .filter(MetricRegistry.isGauge)
+  //     .forEach((registration) => map.set(registration.name, registration.metricRef as Gauge<any>))
+  //   return map
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getHistogramList} instead
-   */
-  public getHistograms (): Map<string, Histogram> {
-    const map: Map<string, Histogram> = new Map()
-    this.metrics
-      .filter(MetricRegistry.isHistogram)
-      .forEach((registration) => map.set(registration.name, registration.metricRef as Histogram))
-    return map
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getHistogramList} instead
+  //  */
+  // public getHistograms(): Map<string, Histogram> {
+  //   const map: Map<string, Histogram> = new Map()
+  //   this.metrics
+  //     .filter(MetricRegistry.isHistogram)
+  //     .forEach((registration) => map.set(registration.name, registration.metricRef as Histogram))
+  //   return map
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getMeterList} instead
-   */
-  public getMeters (): Map<string, Meter> {
-    const map: Map<string, Meter> = new Map()
-    this.metrics
-      .filter(MetricRegistry.isMeter)
-      .forEach((registration) => map.set(registration.name, registration.metricRef as Meter))
-    return map
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getMeterList} instead
+  //  */
+  // public getMeters(): Map<string, Meter> {
+  //   const map: Map<string, Meter> = new Map()
+  //   this.metrics
+  //     .filter(MetricRegistry.isMeter)
+  //     .forEach((registration) => map.set(registration.name, registration.metricRef as Meter))
+  //   return map
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getTimerList} instead
-   */
-  public getTimers (): Map<string, Timer> {
-    const map: Map<string, Timer> = new Map()
-    this.metrics
-      .filter(MetricRegistry.isTimer)
-      .forEach((registration) => map.set(registration.name, registration.metricRef as Timer))
-    return map
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getTimerList} instead
+  //  */
+  // public getTimers(): Map<string, Timer> {
+  //   const map: Map<string, Timer> = new Map()
+  //   this.metrics
+  //     .filter(MetricRegistry.isTimer)
+  //     .forEach((registration) => map.set(registration.name, registration.metricRef as Timer))
+  //   return map
+  // }
 
   /**
    * Gets the list of all managed counter instances.
@@ -362,7 +363,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Counter[]}
    * @memberof MetricRegistry
    */
-  public getCounterList (): Counter[] {
+  public getCounterList(): Counter[] {
     return this.metrics
       .filter(MetricRegistry.isCounter)
       .map((registration) => registration.metricRef as Counter)
@@ -374,7 +375,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {MonotoneCounter[]}
    * @memberof MetricRegistry
    */
-  public getMonotoneCounterList (): MonotoneCounter[] {
+  public getMonotoneCounterList(): MonotoneCounter[] {
     return this.metrics
       .filter(MetricRegistry.isPureMonotoneCounter)
       .map((registration) => registration.metricRef as MonotoneCounter)
@@ -386,7 +387,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Array<Gauge<any>>}
    * @memberof MetricRegistry
    */
-  public getGaugeList (): Array<Gauge<any>> {
+  public getGaugeList(): Array<Gauge<any>> {
     return this.metrics
       .filter(MetricRegistry.isGauge)
       .map((registration) => registration.metricRef as Gauge<any>)
@@ -398,7 +399,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Histogram[]}
    * @memberof MetricRegistry
    */
-  public getHistogramList (): Histogram[] {
+  public getHistogramList(): Histogram[] {
     return this.metrics
       .filter(MetricRegistry.isHistogram)
       .map((registration) => registration.metricRef as Histogram)
@@ -410,7 +411,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Meter[]}
    * @memberof MetricRegistry
    */
-  public getMeterList (): Meter[] {
+  public getMeterList(): Meter[] {
     return this.metrics
       .filter(MetricRegistry.isMeter)
       .map((registration) => registration.metricRef as Meter)
@@ -422,7 +423,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Timer[]}
    * @memberof MetricRegistry
    */
-  public getTimerList (): Timer[] {
+  public getTimerList(): Timer[] {
     return this.metrics
       .filter(MetricRegistry.isTimer)
       .map((registration) => registration.metricRef as Timer)
@@ -434,7 +435,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Map<string, Metric>}
    * @memberof MetricRegistry
    */
-  public getMetrics (): Map<string, Metric> {
+  public getMetrics(): Map<string, Metric> {
     const map: Map<string, Metric> = new Map()
     this.metrics
       .forEach((registration) => map.set(registration.name, registration.metricRef))
@@ -447,51 +448,51 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Metric[]}
    * @memberof MetricRegistry
    */
-  public getMetricList (): Metric[] {
+  public getMetricList(): Metric[] {
     return this.metrics.map((metric) => metric.metricRef)
   }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getMetricsByName} instead
-   */
-  public getMetric (name: string): Metric {
-    return this.getFirstByName(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getMetricsByName} instead
+  //  */
+  // public getMetric(name: string): Metric {
+  //   return this.getFirstByName(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getCountersByName} instead
-   */
-  public getCounter (name: string): Counter {
-    return this.getFirstByName<Counter>(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getCountersByName} instead
+  //  */
+  // public getCounter(name: string): Counter {
+  //   return this.getFirstByName<Counter>(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getGaugesByName} instead
-   */
-  public getGauge (name: string): Gauge<any> {
-    return this.getFirstByName<Gauge<any>>(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getGaugesByName} instead
+  //  */
+  // public getGauge(name: string): Gauge<any> {
+  //   return this.getFirstByName<Gauge<any>>(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getHistogramsByName} instead
-   */
-  public getHistogram (name: string): Histogram {
-    return this.getFirstByName<Histogram>(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getHistogramsByName} instead
+  //  */
+  // public getHistogram(name: string): Histogram {
+  //   return this.getFirstByName<Histogram>(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getMetersByName} instead
-   */
-  public getMeter (name: string): Meter {
-    return this.getFirstByName<Meter>(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getMetersByName} instead
+  //  */
+  // public getMeter(name: string): Meter {
+  //   return this.getFirstByName<Meter>(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link getTimersByName} instead
-   */
-  public getTimer (name: string): Timer {
-    return this.getFirstByName<Timer>(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link getTimersByName} instead
+  //  */
+  // public getTimer(name: string): Timer {
+  //   return this.getFirstByName<Timer>(name)
+  // }
 
   /**
    * Gets all managed metric instance by name.
@@ -500,7 +501,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Metric[]}
    * @memberof MetricRegistry
    */
-  public getMetricsByName (name: string): Metric[] {
+  public getMetricsByName(name: string): Metric[] {
     return this.getByName(name)
   }
 
@@ -511,7 +512,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Counter[]}
    * @memberof MetricRegistry
    */
-  public getCountersByName (name: string): Counter[] {
+  public getCountersByName(name: string): Counter[] {
     return this.getByName<Counter>(name)
   }
 
@@ -522,7 +523,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {MonotoneCounter[]}
    * @memberof MetricRegistry
    */
-  public getMonotoneCountersByName (name: string): MonotoneCounter[] {
+  public getMonotoneCountersByName(name: string): MonotoneCounter[] {
     return this.getByName<MonotoneCounter>(name)
   }
 
@@ -533,7 +534,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Array<Gauge<any>>}
    * @memberof MetricRegistry
    */
-  public getGaugesByName (name: string): Array<Gauge<any>> {
+  public getGaugesByName(name: string): Array<Gauge<any>> {
     return this.getByName<Gauge<any>>(name)
   }
 
@@ -544,7 +545,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Histogram[]}
    * @memberof MetricRegistry
    */
-  public getHistogramsByName (name: string): Histogram[] {
+  public getHistogramsByName(name: string): Histogram[] {
     return this.getByName<Histogram>(name)
   }
 
@@ -555,7 +556,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Meter[]}
    * @memberof MetricRegistry
    */
-  public getMetersByName (name: string): Meter[] {
+  public getMetersByName(name: string): Meter[] {
     return this.getByName<Meter>(name)
   }
 
@@ -566,27 +567,27 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Timer[]}
    * @memberof MetricRegistry
    */
-  public getTimersByName (name: string): Timer[] {
+  public getTimersByName(name: string): Timer[] {
     return this.getByName<Timer>(name)
   }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeMetric (name: string): this {
-    const metrics: Metric[] = this.getByName(name)
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeMetric(name: string): this {
+  //   const metrics: Metric[] = this.getByName(name)
 
-    if (metrics.length > 0) {
-      const index = this.metrics
-        .map((m) => m.metricRef)
-        .indexOf(metrics[0], 0)
-      if (index > -1) {
-        this.metrics.splice(index, 1)
-      }
-      this.fireMetricRemoved(name, metrics[0])
-    }
-    return this
-  }
+  //   if (metrics.length > 0) {
+  //     const index = this.metrics
+  //       .map((m) => m.metricRef)
+  //       .indexOf(metrics[0], 0)
+  //     if (index > -1) {
+  //       this.metrics.splice(index, 1)
+  //     }
+  //     this.fireMetricRemoved(name, metrics[0])
+  //   }
+  //   return this
+  // }
 
   /**
    * Removes all managed metric instances by name regardless of the type.
@@ -595,7 +596,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public removeMetrics (name: string): this {
+  public removeMetrics(name: string): this {
     const metrics: Metric[] = this.getByName(name)
 
     metrics.forEach((metric) => {
@@ -610,40 +611,40 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
     return this
   }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeCounter (name: string): this {
-    return this.removeMetric(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeCounter(name: string): this {
+  //   return this.removeMetric(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeGauge (name: string): this {
-    return this.removeMetric(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeGauge(name: string): this {
+  //   return this.removeMetric(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeHistogram (name: string): this {
-    return this.removeMetric(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeHistogram(name: string): this {
+  //   return this.removeMetric(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeMeter (name: string): this {
-    return this.removeMetric(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeMeter(name: string): this {
+  //   return this.removeMetric(name)
+  // }
 
-  /**
-   * @deprecated since version 1.3 - use {@link removeMetrics} instead
-   */
-  public removeTimer (name: string): this {
-    return this.removeMetric(name)
-  }
+  // /**
+  //  * @deprecated since version 1.3 - use {@link removeMetrics} instead
+  //  */
+  // public removeTimer(name: string): this {
+  //   return this.removeMetric(name)
+  // }
 
   /**
    * Builds a new counter with the given name and adds it
@@ -655,7 +656,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Counter}
    * @memberof MetricRegistry
    */
-  public newCounter (name: string, group: string = null, description: string = null): Counter {
+  public newCounter(name: string, group: string = null, description: string = null): Counter {
     const counter = new Counter(name, description)
     this.registerMetric(counter, group, description)
     return counter
@@ -671,7 +672,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {MonotoneCounter}
    * @memberof MetricRegistry
    */
-  public newMonotoneCounter (name: string, group: string = null, description: string = null): MonotoneCounter {
+  public newMonotoneCounter(name: string, group: string = null, description: string = null): MonotoneCounter {
     const counter = new MonotoneCounter(name, description)
     this.registerMetric(counter, group, description)
     return counter
@@ -689,7 +690,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Meter}
    * @memberof MetricRegistry
    */
-  public newMeter (
+  public newMeter(
     name: string,
     group: string = null,
     clock: Clock = this.defaultClock,
@@ -715,7 +716,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {HdrHistogram}
    * @memberof MetricRegistry
    */
-  public newHdrHistogram (
+  public newHdrHistogram(
     name: string,
     lowest: number = 1,
     max: number = 100,
@@ -739,7 +740,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Histogram}
    * @memberof MetricRegistry
    */
-  public newHistogram (
+  public newHistogram(
     name: string,
     group: string = null,
     reservoir: Reservoir = null,
@@ -765,7 +766,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {Timer}
    * @memberof MetricRegistry
    */
-  public newTimer (
+  public newTimer(
     name: string,
     group: string = null,
     clock: Clock = this.defaultClock,
@@ -791,7 +792,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public registerMetric (metric: Metric, group: string = null, description: string = null): this {
+  public registerMetric(metric: Metric, group: string = null, description: string = null): this {
     if (group) {
       metric.setGroup(group)
     }
@@ -801,11 +802,11 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
     }
 
     if (metric instanceof Meter ||
-            metric instanceof Counter ||
-            metric instanceof MonotoneCounter ||
-            MetricRegistry.isGauge<any>(metric) ||
-            metric instanceof Histogram ||
-            metric instanceof Timer) {
+      metric instanceof Counter ||
+      metric instanceof MonotoneCounter ||
+      MetricRegistry.isGauge<any>(metric) ||
+      metric instanceof Histogram ||
+      metric instanceof Timer) {
       this.metrics.push(new MetricRegistration(metric))
       this.fireMetricAdded(metric.getName(), metric)
     } else if (MetricRegistry.isMetricSet(metric)) {
@@ -827,10 +828,11 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {this}
    * @memberof MetricRegistry
    */
-  public register (name: string, metric: Metric, group: string = null, description: string = null): this {
+  public register(name: string, metric: Metric, group: string = null, description: string = null): this {
     if (group) {
       metric.setGroup(group)
     }
+
     if (description) {
       metric.setDescription(description)
     }
@@ -838,11 +840,11 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
     metric.setName(this.generateName(name, metric))
 
     if (metric instanceof Meter ||
-            metric instanceof Counter ||
-            metric instanceof MonotoneCounter ||
-            MetricRegistry.isGauge<any>(metric) ||
-            metric instanceof Histogram ||
-            metric instanceof Timer) {
+      metric instanceof Counter ||
+      metric instanceof MonotoneCounter ||
+      MetricRegistry.isGauge<any>(metric) ||
+      metric instanceof Histogram ||
+      metric instanceof Timer) {
       this.metrics.push(new MetricRegistration(metric))
       this.fireMetricAdded(name, metric)
     } else if (MetricRegistry.isMetricSet(metric)) {
@@ -863,13 +865,13 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {T}
    * @memberof MetricRegistry
    */
-  private getFirstByName<T extends Metric> (name: string): T {
-    const arr: Metric[] = this.getByName(name)
-    if (arr.length === 0) {
-      return null
-    }
-    return arr[0] as T
-  }
+  // private getFirstByName<T extends Metric>(name: string): T {
+  //   const arr: Metric[] = this.getByName(name)
+  //   if (arr.length === 0) {
+  //     return null
+  //   }
+  //   return arr[0] as T
+  // }
 
   /**
    * Gets all metric instances by name.
@@ -880,7 +882,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {T[]}
    * @memberof MetricRegistry
    */
-  private getByName<T extends Metric> (name: string): T[] {
+  private getByName<T extends Metric>(name: string): T[] {
     return this.metrics
       .filter((metric) => metric.name === name)
       .map((metric) => metric.metricRef) as T[]
@@ -895,7 +897,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @returns {string}
    * @memberof MetricRegistry
    */
-  private generateName (name: string, metric: Metric): string {
+  private generateName(name: string, metric: Metric): string {
     if (metric.getGroup()) {
       return `${metric.getGroup()}.${name}`
     }
@@ -910,7 +912,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @param {Metric} metric
    * @memberof MetricRegistry
    */
-  private fireMetricAdded (name: string, metric: Metric): void {
+  private fireMetricAdded(name: string, metric: Metric): void {
     this.listeners.forEach((listener) => listener.metricAdded(name, metric))
   }
 
@@ -922,7 +924,7 @@ export class MetricRegistry extends BaseMetric implements MetricSet {
    * @param {Metric} metric
    * @memberof MetricRegistry
    */
-  private fireMetricRemoved (name: string, metric: Metric): void {
+  private fireMetricRemoved(name: string, metric: Metric): void {
     this.listeners.forEach((listener) => listener.metricRemoved(name, metric))
   }
 }

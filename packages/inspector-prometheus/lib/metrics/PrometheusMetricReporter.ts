@@ -48,7 +48,7 @@ import { PrometheusReporterOptions } from './PrometheusReporterOptions'
 /**
  * Enumeration used to determine valid metric types of prometheus.
  */
-type PrometheusMetricType = 'counter' | 'gauge' | 'histogram' | 'summary' | 'untyped';
+type PrometheusMetricType = 'counter' | 'gauge' | 'histogram' | 'summary' | 'untyped'
 
 /**
  * Helper interface for reported fields.
@@ -70,6 +70,7 @@ interface PrometheusMetricResult {
    * @memberof PrometheusMetricResult
    */
   readonly type: PrometheusMetricType
+
   /**
    * Contains field-name to value mapping of this metric-result.
    *
@@ -77,6 +78,7 @@ interface PrometheusMetricResult {
    * @memberof PrometheusMetricResult
    */
   readonly fields: PrometheusFields
+
   /**
    * Indicates if this result can be handle by the reporter.
    *
@@ -106,7 +108,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @static
    * @memberof PrometheusMetricReporter
    */
-  public static readonly MESSAGE_TYPE_REQUEST = 'inspector-prometheus:metric-reporter:request-metrics';
+  public static readonly MESSAGE_TYPE_REQUEST = 'inspector-prometheus:metric-reporter:request-metrics'
+
   /**
    * Constant for the "type" variable of process-level message identifying report-response-messages
    * from forked processes.
@@ -114,7 +117,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @static
    * @memberof PrometheusMetricReporter
    */
-  public static readonly MESSAGE_TYPE_RESPONSE = 'inspector-prometheus:metric-reporter:response-metrics';
+  public static readonly MESSAGE_TYPE_RESPONSE = 'inspector-prometheus:metric-reporter:response-metrics'
+
   /**
    * Used to replace unsupported characters from label name.
    *
@@ -122,7 +126,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @static
    * @memberof PrometheusMetricReporter
    */
-  private static readonly LABEL_NAME_REPLACEMENT_REGEXP = new RegExp('[^a-zA-Z0-9_]', 'g');
+  private static readonly LABEL_NAME_REPLACEMENT_REGEXP = new RegExp('[^a-zA-Z0-9_]', 'g')
 
   /**
    * used to replace the first character of a label name if needed.
@@ -133,7 +137,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    */
   private static readonly LABEL_NAME_START_EXCLUSION = ['_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].sort(
     (a: string, b: string) => a.localeCompare(b)
-  );
+  )
 
   /**
    * Used to replace unsupported characters from metric name.
@@ -142,7 +146,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @static
    * @memberof PrometheusMetricReporter
    */
-  private static readonly METRIC_NAME_REPLACEMENT_REGEXP = new RegExp('[^a-zA-Z0-9_:]', 'g');
+  private static readonly METRIC_NAME_REPLACEMENT_REGEXP = new RegExp('[^a-zA-Z0-9_:]', 'g')
 
   /**
    * used to replace the first character of a metric name if needed.
@@ -153,7 +157,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    */
   private static readonly METRIC_NAME_START_EXCLUSION = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].sort(
     (a: string, b: string) => a.localeCompare(b)
-  );
+  )
 
   /**
    * Checks if a given string is empty.
@@ -164,7 +168,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {boolean}
    * @memberof PrometheusMetricReporter
    */
-  private static isEmpty (value: string): boolean {
+  private static isEmpty(value: string): boolean {
     return !value || value.trim() === ''
   }
 
@@ -177,7 +181,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {value is number}
    * @memberof PrometheusMetricReporter
    */
-  private static isNumber (value: any): value is number {
+  private static isNumber(value: any): value is number {
     return typeof (value) === 'number'
   }
 
@@ -188,7 +192,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @type {PrometheusMetricType}
    * @memberof PrometheusMetricReporter
    */
-  private readonly counterType: PrometheusMetricType = 'counter';
+  private readonly counterType: PrometheusMetricType = 'counter'
+
   /**
    * The prometheus gauge type string.
    *
@@ -196,7 +201,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @type {PrometheusMetricType}
    * @memberof PrometheusMetricReporter
    */
-  private readonly gaugeType: PrometheusMetricType = 'gauge';
+  private readonly gaugeType: PrometheusMetricType = 'gauge'
+
   /**
    * The prometheus histogram type string.
    *
@@ -204,7 +210,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @type {PrometheusMetricType}
    * @memberof PrometheusMetricReporter
    */
-  private readonly histogramType: PrometheusMetricType = 'histogram';
+  private readonly histogramType: PrometheusMetricType = 'histogram'
+
   /**
    * The prometheus summary type string.
    *
@@ -212,7 +219,8 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @type {PrometheusMetricType}
    * @memberof PrometheusMetricReporter
    */
-  private readonly summaryType: PrometheusMetricType = 'summary';
+  private readonly summaryType: PrometheusMetricType = 'summary'
+
   /**
    * Internal eventbus used to forward received messages from forked metric reporters.
    *
@@ -220,7 +228,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @type {EventEmitter}
    * @memberof PrometheusMetricReporter
    */
-  private readonly internalEventbus: EventEmitter;
+  private readonly internalEventbus: EventEmitter
 
   /**
    * Creates an instance of PrometheusMetricReporter.
@@ -228,7 +236,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @param {string} [reporterType] the type of the reporter implementation - for internal use
    * @memberof PrometheusMetricReporter
    */
-  public constructor ({
+  public constructor({
     clock = new StdClock(),
     emitComments = true,
     includeTimestamp = false,
@@ -238,7 +246,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     useUntyped = false,
     clusterOptions = new DefaultPrometheusClusterOptions()
   }: PrometheusReporterOptions,
-  reporterType?: string) {
+    reporterType?: string) {
     super({
       clock,
       clusterOptions,
@@ -270,7 +278,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {string}
    * @memberof PrometheusMetricReporter
    */
-  public async getMetricsString (): Promise<string> {
+  public async getMetricsString(): Promise<string> {
     const workerPromises: Array<Promise<string>> = []
     const clusterOptions = this.options.clusterOptions
     if (this.canSendMessagesToWorkers()) {
@@ -355,7 +363,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {Promise<void>}
    * @memberof PrometheusMetricReporter
    */
-  public async flushEvents (): Promise<void> {
+  public async flushEvents(): Promise<void> {
   }
 
   /**
@@ -363,7 +371,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    *
    * @memberof PrometheusMetricReporter
    */
-  public async start (): Promise<this> {
+  public async start(): Promise<this> {
     return this
   }
 
@@ -372,7 +380,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    *
    * @memberof PrometheusMetricReporter
    */
-  public async stop (): Promise<this> {
+  public async stop(): Promise<this> {
     return this
   }
 
@@ -383,7 +391,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {boolean}
    * @memberof PrometheusMetricReporter
    */
-  protected sendMetricsToMaster (): boolean {
+  protected sendMetricsToMaster(): boolean {
     return false
   }
 
@@ -395,7 +403,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {boolean}
    * @memberof PrometheusMetricReporter
    */
-  protected canSendMessagesToWorkers (): boolean {
+  protected canSendMessagesToWorkers(): boolean {
     const clusterOptions = this.options.clusterOptions
     return clusterOptions.enabled &&
       !!clusterOptions.getWorkers &&
@@ -409,7 +417,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {string}
    * @memberof PrometheusMetricReporter
    */
-  protected generateRandomId (): string {
+  protected generateRandomId(): string {
     return randomBytes(32).toString('hex')
   }
 
@@ -422,7 +430,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @param {*} message
    * @memberof PrometheusMetricReporter
    */
-  protected async handleReportRequest (message: any): Promise<void> {
+  protected async handleReportRequest(message: any): Promise<void> {
     if (this.canHandleMessage(message, PrometheusMetricReporter.MESSAGE_TYPE_REQUEST)) {
       const request: InterprocessReportRequest = message
       const metricsStr = await this.getMetricsString()
@@ -451,7 +459,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @param {*} message
    * @memberof PrometheusMetricReporter
    */
-  protected async handleReportResponse (message: any): Promise<void> {
+  protected async handleReportResponse(message: any): Promise<void> {
     if (this.canHandleMessage(message, PrometheusMetricReporter.MESSAGE_TYPE_RESPONSE)) {
       const response: InterprocessReportResponse = message
       this.internalEventbus.emit(response.id, response)
@@ -468,7 +476,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {Promise<void>}
    * @memberof PrometheusMetricReporter
    */
-  protected async handleReportMessage (worker: cluster.Worker, message: any, handle: any): Promise<void> {
+  protected async handleReportMessage(worker: cluster.Worker, message: any, handle: any): Promise<void> {
   }
 
   /**
@@ -477,11 +485,11 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @protected
    * @memberof MetricReporter
    */
-  protected async beforeReport (ctx: OverallReportContext): Promise<void> {
+  protected async beforeReport(ctx: OverallReportContext): Promise<void> {
     ctx.result = ''
   }
 
-  protected async handleResults (
+  protected async handleResults(
     overallCtx: OverallReportContext,
     registry: MetricRegistry | null,
     date: Date,
@@ -498,7 +506,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     overallCtx.result = `${overallCtx.result}${lines.join('\n')}`
   }
 
-  protected reportCounter (
+  protected reportCounter(
     counter: MonotoneCounter | Counter,
     ctx: MetricSetReportContext<MonotoneCounter | Counter>): PrometheusMetricResult {
     if (counter instanceof Counter) {
@@ -519,7 +527,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     }
   }
 
-  protected reportGauge (gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): PrometheusMetricResult {
+  protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): PrometheusMetricResult {
     return {
       canBeReported: true,
       fields: {
@@ -529,7 +537,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     }
   }
 
-  protected reportHistogram (histogram: Histogram, ctx: MetricSetReportContext<Histogram>): PrometheusMetricResult {
+  protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): PrometheusMetricResult {
     return {
       canBeReported: !isNaN(histogram.getCount()),
       fields: {
@@ -540,7 +548,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     }
   }
 
-  protected reportMeter (meter: Meter, ctx: MetricSetReportContext<Meter>): PrometheusMetricResult {
+  protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): PrometheusMetricResult {
     return {
       canBeReported: !isNaN(meter.getCount()),
       fields: {
@@ -550,7 +558,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
     }
   }
 
-  protected reportTimer (timer: Timer, ctx: MetricSetReportContext<Timer>): PrometheusMetricResult {
+  protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): PrometheusMetricResult {
     return {
       canBeReported: !isNaN(timer.getCount()),
       fields: {
@@ -571,7 +579,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {Tags}
    * @memberof PrometheusMetricReporter
    */
-  protected buildPrometheusTags (
+  protected buildPrometheusTags(
     taggable: Taggable | SerializableMetric,
     exclude: string[],
     registryTags?: Tags
@@ -700,7 +708,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {string}
    * @memberof PrometheusMetricReporter
    */
-  private getValue (value: any): string {
+  private getValue(value: any): string {
     let valueStr = `${value}`
 
     if (PrometheusMetricReporter.isNumber(value) && !Number.isFinite(value)) {
@@ -722,7 +730,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {string}
    * @memberof PrometheusMetricReporter
    */
-  private getTimestamp (now: Date): string {
+  private getTimestamp(now: Date): string {
     return this.options.includeTimestamp ? ` ${now.getUTCMilliseconds()}` : ''
   }
 
@@ -807,7 +815,7 @@ export class PrometheusMetricReporter extends MetricReporter<PrometheusReporterO
    * @returns {string}
    * @memberof PrometheusMetricReporter
    */
-  private getMetricName (metric: Metric | SerializableMetric): string {
+  private getMetricName(metric: Metric | SerializableMetric): string {
     let name = getMetricName(metric)
     const group = getMetricGroup(metric)
     if (group) {

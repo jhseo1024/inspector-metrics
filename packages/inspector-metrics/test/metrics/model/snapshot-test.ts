@@ -1,26 +1,26 @@
-/* eslint-env mocha */
+// /* eslint-env mocha */
 
-import "reflect-metadata";
-import "source-map-support/register";
+// import "reflect-metadata";
+// import "source-map-support/register";
 
-import * as chai from "chai";
-import { suite, test } from "@testdeck/mocha";
+// import * as chai from "chai";
+// import { suite, test } from "@testdeck/mocha";
 
-import { SimpleSnapshot } from "../../../lib/metrics/Models/snapshot";
+// import { SimpleSnapshot } from "../../../lib/metrics/Models/Snapshot";
 
-const expect = chai.expect;
+// const expect = chai.expect;
 
-@suite
-export class SnapshotTest {
+// @suite
+// export class SnapshotTest {
 
-    @test
-    public "check sort of values"(): void {
-        const snapshot = new SimpleSnapshot([1, 2, 3, 5, 100, 300, -1, -999, -100, 200, 0, 400, 999, 4, 846]);
+//     @test
+//     public "check sort of values"(): void {
+//         const snapshot = new SimpleSnapshot([1, 2, 3, 5, 100, 300, -1, -999, -100, 200, 0, 400, 999, 4, 846]);
 
-        expect(`${snapshot.getValues()}`)
-            .to.deep.equal(`${[-999, -100, -1, 0, 1, 2, 3, 4, 5, 100, 200, 300, 400, 846, 999]}`);
-        expect(snapshot.getMax()).to.equal(999);
-        expect(snapshot.getMin()).to.equal(-999);
-    }
+//         expect(`${snapshot.getValues()}`)
+//             .to.deep.equal(`${[-999, -100, -1, 0, 1, 2, 3, 4, 5, 100, 200, 300, 400, 846, 999]}`);
+//         expect(snapshot.getMax()).to.equal(999);
+//         expect(snapshot.getMin()).to.equal(-999);
+//     }
 
-}
+// }

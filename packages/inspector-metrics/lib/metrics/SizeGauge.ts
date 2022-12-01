@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 
-import { Gauge } from './gauge'
-import { BaseMetric } from './Models/metric'
+import { Gauge } from './Gauge'
+import { BaseMetric } from './Models/Metric'
 
 export interface LengthMethodInterface {
   length(): number

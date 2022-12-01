@@ -1,5 +1,5 @@
 import "source-map-support/register"
-import { Metric, SerializableMetric } from "./metric"
+import { Metric, SerializableMetric } from "./Metric"
 
 export interface Counting extends Metric {
   getCount(): number

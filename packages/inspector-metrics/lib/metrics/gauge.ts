@@ -1,6 +1,6 @@
 import 'source-map-support/register'
 
-import { BaseMetric, Metric, SerializableMetric } from './Models/metric'
+import { BaseMetric, Metric, SerializableMetric } from './Models/Metric'
 
 export interface Gauge<T> extends Metric, SerializableMetric {
   getValue(): T
@@ -11,7 +11,6 @@ export class SimpleGauge extends BaseMetric implements Gauge<number> {
 
   public constructor(name?: string, description?: string) {
     super()
-
     this.name = name
     this.description = description
   }

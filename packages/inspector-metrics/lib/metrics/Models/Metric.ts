@@ -1,7 +1,7 @@
 import "source-map-support/register"
 import { Groupable } from "./Groupable"
 import { mapToMetadata, Metadata, MetadataContainer } from "./MetadataContainer"
-import { mapToTags, Taggable, Tags } from "./taggable"
+import { mapToTags, Taggable, Tags } from "./Taggable"
 
 export function isSerializableMetric(
   metric: Groupable | MetadataContainer | Taggable | Metric | SerializableMetric): metric is SerializableMetric {

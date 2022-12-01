@@ -1,8 +1,8 @@
 import "source-map-support/register"
 
-import { MILLISECOND, TimeUnit } from "../Models/time-unit"
-import { MetricReporter } from "./metric-reporter"
-import { MetricReporterOptions } from "./metric-reporter-options"
+import { MILLISECOND, TimeUnit } from "../Models/TimeUnit"
+import { MetricReporter } from "./MetricReporter"
+import { MetricReporterOptions } from "./MetricReporterOptions"
 
 export type Scheduler = (prog: () => Promise<any>, interval: number) => NodeJS.Timer
 

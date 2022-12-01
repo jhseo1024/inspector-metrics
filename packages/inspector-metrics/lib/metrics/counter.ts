@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 
-import { Counting } from './Models/counting'
-import { BaseMetric, Metric } from './Models/metric'
+import { Counting } from './Models/Counting'
+import { BaseMetric, Metric } from './Models/Metric'
 
 export class MonotoneCounter extends BaseMetric implements Counting, Metric {
   protected count: number = 0

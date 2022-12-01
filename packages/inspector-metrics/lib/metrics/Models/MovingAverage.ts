@@ -1,5 +1,5 @@
 import "source-map-support/register"
-import { NANOSECOND, TimeUnit } from "./time-unit"
+import { NANOSECOND, TimeUnit } from "./TimeUnit"
 
 export interface MovingAverage {
   getAlpha(): number

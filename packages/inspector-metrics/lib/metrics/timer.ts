@@ -1,17 +1,17 @@
 import 'source-map-support/register'
 
-import { Clock, diff, Time } from './clock'
-import { Histogram } from './histogram'
-import { Meter } from './meter'
-import { BucketCounting, Buckets, BucketToCountMap, SerializableBucketCounting } from './Models/counting'
-import { Int64Wrapper } from './Models/int64'
-import { Metered, MeteredRates, SerializableMetered } from './Models/metered'
-import { BaseMetric } from './Models/metric'
-import { Reservoir } from './Models/reservoir'
-import { Sampling, SerializableSampling } from './Models/sampling'
-import { SerializedSnapshot, Snapshot } from './Models/snapshot'
-import { SerializableSummarizing, Summarizing } from './Models/summarizing'
-import { NANOSECOND, TimeUnit } from './Models/time-unit'
+import { Clock, diff, Time } from './Clock'
+import { Histogram } from './Histogram'
+import { Meter } from './Meter'
+import { BucketCounting, Buckets, BucketToCountMap, SerializableBucketCounting } from './Models/Counting'
+import { Int64Wrapper } from './Models/Int64'
+import { Metered, MeteredRates, SerializableMetered } from './Models/Metered'
+import { BaseMetric } from './Models/Metric'
+import { Reservoir } from './Models/Reservoir'
+import { Sampling, SerializableSampling } from './Models/Sampling'
+import { SerializedSnapshot, Snapshot } from './Models/Snapshot'
+import { SerializableSummarizing, Summarizing } from './Models/Summarizing'
+import { NANOSECOND, TimeUnit } from './Models/TimeUnit'
 
 export class StopWatch {
   private readonly clock: Clock
@@ -49,7 +49,6 @@ export class Timer extends BaseMetric implements
     description?: string,
     buckets: Buckets = new Buckets()) {
     super()
-
     this.clock = clock
     this.name = name
     this.description = description

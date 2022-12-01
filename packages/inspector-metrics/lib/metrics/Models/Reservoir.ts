@@ -1,5 +1,5 @@
 import "source-map-support/register"
-import { SimpleSnapshot, Snapshot } from "./snapshot"
+import { SimpleSnapshot, Snapshot } from "./Snapshot"
 
 export interface Reservoir {
   size(): number

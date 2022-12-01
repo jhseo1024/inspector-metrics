@@ -1,18 +1,18 @@
-/* eslint-env mocha */
+// /* eslint-env mocha */
 
-import 'reflect-metadata'
-import 'source-map-support/register'
+// import 'reflect-metadata'
+// import 'source-map-support/register'
 
-import { Clock, Time } from '../../lib/metrics/clock'
+// import { Clock, Time } from '../../lib/metrics/Clock'
 
-export class MockedClock implements Clock {
-  private currentTime: Time
+// export class MockedClock implements Clock {
+//   private currentTime: Time
 
-  public time (): Time {
-    return this.currentTime
-  }
+//   public time (): Time {
+//     return this.currentTime
+//   }
 
-  public setCurrentTime (time: Time): void {
-    this.currentTime = time
-  }
-}
+//   public setCurrentTime (time: Time): void {
+//     this.currentTime = time
+//   }
+// }

@@ -1,11 +1,11 @@
 import 'source-map-support/register'
 
-import { Histogram } from './histogram'
-import { BucketCounting, Buckets, Counting } from './Models/counting'
-import { Metric } from './Models/metric'
-import { Sampling } from './Models/sampling'
-import { SerializedSnapshot, Snapshot } from './Models/snapshot'
-import { Summarizing } from './Models/summarizing'
+import { Histogram } from './Histogram'
+import { BucketCounting, Buckets, Counting } from './Models/Counting'
+import { Metric } from './Models/Metric'
+import { Sampling } from './Models/Sampling'
+import { SerializedSnapshot, Snapshot } from './Models/Snapshot'
+import { Summarizing } from './Models/Summarizing'
 
 let NativeHistogram: any = null
 try {

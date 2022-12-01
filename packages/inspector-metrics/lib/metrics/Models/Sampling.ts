@@ -1,6 +1,6 @@
 import "source-map-support/register"
 
-import { SerializedSnapshot, SimpleSnapshot, Snapshot } from "./snapshot"
+import { SerializedSnapshot, SimpleSnapshot, Snapshot } from "./Snapshot"
 
 export interface Sampling {
   getSnapshot(): Snapshot

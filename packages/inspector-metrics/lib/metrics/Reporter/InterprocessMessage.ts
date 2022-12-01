@@ -1,9 +1,9 @@
 import "source-map-support/register"
 
-import { SerializableMetric } from "../Models/metric"
-import { Tags } from "../Models/taggable"
-import { OverallReportContext } from "./overall-report-context"
-import { ReportingResult } from "./reporting-result"
+import { SerializableMetric } from "../Models/Metric"
+import { Tags } from "../Models/Taggable"
+import { OverallReportContext } from "./OverallReportContext"
+import { ReportingResult } from "./ReportingResult"
 
 export interface InterprocessMessage {
   targetReporterType: string

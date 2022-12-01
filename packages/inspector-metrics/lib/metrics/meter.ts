@@ -1,10 +1,10 @@
 import 'source-map-support/register'
 
-import { Clock, diff, Time } from './clock'
-import { Metered, MeteredRates, SerializableMetered } from './Models/metered'
-import { BaseMetric } from './Models/metric'
-import { ExponentiallyWeightedMovingAverage, MovingAverage } from './Models/moving-average'
-import { NANOSECOND, SECOND } from './Models/time-unit'
+import { Clock, diff, Time } from './Clock'
+import { Metered, MeteredRates, SerializableMetered } from './Models/Metered'
+import { BaseMetric } from './Models/Metric'
+import { ExponentiallyWeightedMovingAverage, MovingAverage } from './Models/MovingAverage'
+import { NANOSECOND, SECOND } from './Models/TimeUnit'
 
 export class Meter extends BaseMetric implements Metered, SerializableMetered {
   private static readonly AVG_1_MINUTE = ExponentiallyWeightedMovingAverage.ALPHA_1_MINUTE_1_SECOND_SAMPLERATE

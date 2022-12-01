@@ -1,12 +1,12 @@
 import 'source-map-support/register'
 
-import { BucketCounting, Buckets, BucketToCountMap, Counting, SerializableBucketCounting } from './Models/counting'
-import { Int64Wrapper } from './Models/int64'
-import { BaseMetric, Metric } from './Models/metric'
-import { Reservoir } from './Models/reservoir'
-import { Sampling, SerializableSampling } from './Models/sampling'
-import { SerializedSnapshot, Snapshot } from './Models/snapshot'
-import { SerializableSummarizing, Summarizing } from './Models/summarizing'
+import { BucketCounting, Buckets, BucketToCountMap, Counting, SerializableBucketCounting } from './Models/Counting'
+import { Int64Wrapper } from './Models/Int64'
+import { BaseMetric, Metric } from './Models/Metric'
+import { Reservoir } from './Models/Reservoir'
+import { Sampling, SerializableSampling } from './Models/Sampling'
+import { SerializedSnapshot, Snapshot } from './Models/Snapshot'
+import { SerializableSummarizing, Summarizing } from './Models/Summarizing'
 
 export class Histogram extends BaseMetric implements
   BucketCounting, Counting, Metric, Sampling, Summarizing,

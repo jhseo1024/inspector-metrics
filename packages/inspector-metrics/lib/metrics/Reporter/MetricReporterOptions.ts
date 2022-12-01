@@ -2,8 +2,8 @@ import "source-map-support/register"
 
 import * as cluster from "cluster"
 import { Worker } from "cluster"
-import { Clock } from "../clock"
-import { ReportMessageReceiver } from "./report-message-receiver"
+import { Clock } from "../Clock"
+import { ReportMessageReceiver } from "./ReportMessageReceiver"
 
 const defaultCluster = (cluster.default || cluster) as any
 

@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 
-import { Gauge } from './gauge'
-import { BaseMetric } from './Models/metric'
+import { Gauge } from './Gauge'
+import { BaseMetric } from './Models/Metric'
 
 export class Event<TEventData> extends BaseMetric implements Gauge<TEventData> {
   private value: TEventData

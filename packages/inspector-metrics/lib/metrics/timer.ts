@@ -49,6 +49,7 @@ export class Timer extends BaseMetric implements
     description?: string,
     buckets: Buckets = new Buckets()) {
     super()
+
     this.clock = clock
     this.name = name
     this.description = description

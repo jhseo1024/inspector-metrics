@@ -8,44 +8,10 @@ import { PrometheusClusterOptions } from './PrometheusClusterOptions'
 
 const defaultCluster = (cluster.default || cluster) as any
 
-/**
- * Default configuration for clustering support for the {@link PrometheusMetricReporter}.
- *
- * @export
- * @class DefaultPrometheusClusterOptions
- * @implements {PrometheusClusterOptions<Worker>}
- */
 export class DefaultPrometheusClusterOptions implements PrometheusClusterOptions<Worker> {
-  /**
-   * Sets the timeout in which a forked process can respond to metric report requests.
-   *
-   * @type {number}
-   * @memberof DefaultPrometheusClusterOptions
-   */
   public readonly workerResponseTimeout: number = 500
-
-  /**
-   * Set to true.
-   *
-   * @type {boolean}
-   * @memberof DefaultClusterOptions
-   */
   public readonly enabled: boolean = true
-  
-  /**
-   * Set to cluster module.
-   *
-   * @type {ReportMessageReceiver}
-   * @memberof DefaultClusterOptions
-   */
   public readonly eventReceiver: ReportMessageReceiver
-  
-  /**
-   * True for forked processes.
-   *
-   * @type {boolean}
-   * @memberof DefaultClusterOptions
-   */
   public readonly sendMetricsToMaster: boolean = defaultCluster.isWorker
 
   public constructor() {
@@ -62,22 +28,12 @@ export class DefaultPrometheusClusterOptions implements PrometheusClusterOptions
     }
   }
 
-  /**
-   * Uses 'worker.send' to send the specified message to the specified worker.
-   *
-   * @memberof DefaultClusterOptions
-   */
   public async sendToWorker(worker: Worker, message: any): Promise<any> {
     if (worker) {
       worker.send(message)
     }
   }
 
-  /**
-   * Returns the values of 'workers'.
-   *
-   * @memberof DefaultClusterOptions
-   */
   public async getWorkers(): Promise<Worker[]> {
     const workers: Worker[] = []
     if (workers) {
@@ -88,11 +44,6 @@ export class DefaultPrometheusClusterOptions implements PrometheusClusterOptions
     return workers
   }
 
-  /**
-   * Uses 'process.send' to send messages.
-   *
-   * @memberof DefaultClusterOptions
-   */
   public async sendToMaster(message: any): Promise<any> {
     process.send(message)
   }

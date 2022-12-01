@@ -6,7 +6,7 @@ import "source-map-support/register";
 import * as chai from "chai";
 import { suite, test } from "@testdeck/mocha";
 
-import * as TimeUnit from "../../../lib/metrics/model/time-unit";
+import * as TimeUnit from "../../../lib/metrics/Models/time-unit";
 
 const expect = chai.expect;
 

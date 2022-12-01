@@ -22,119 +22,34 @@ import {
   Timer
 } from 'inspector-metrics'
 
-/**
- * measurement point definition
- */
 export interface MeasurementPoint {
-  /**
-   * Measurement is the Influx measurement name.
-   */
   measurement: string
-  
-  /**
-   * Tags is the list of tag values to insert.
-   */
+
   tags: {
     [name: string]: string
   }
 
-  /**
-   * Fields is the list of field values to insert.
-   */
   fields: {
     [name: string]: any
   }
 
-  /**
-   * Timestamp tags this measurement with a date. This can be a Date object,
-   * in which case we'll adjust it to the desired precision, or a numeric
-   * string or number, in which case it gets passed directly to Influx.
-   */
   timestamp: Date | string | number
 }
 
-/**
- * Sender interface for influxdb client abstraction.
- *
- * @export
- * @interface Sender
- */
 export interface Sender {
-
-  /**
-   * Indicates if the sender is ready to send data.
-   *
-   * @returns {Promise<boolean>}
-   * @memberof Sender
-   */
   isReady(): Promise<boolean>
-
-  /**
-   * Triggers the initialization process.
-   *
-   * @returns {Promise<any>}
-   * @memberof Sender
-   */
   init(): Promise<any>
-
-  /**
-   * Sends the given data points to influxdb.
-   *
-   * @param {T[]} points
-   * @returns {Promise<any>}
-   * @memberof Sender
-   */
   send(points: MeasurementPoint[]): Promise<void>
-
 }
 
-/**
- * Options for {@link InfluxMetricReporter}.
- *
- * @export
- * @interface InfluxMetricReporterOptions
- * @extends {ScheduledMetricReporterOptions}
- */
 export interface InfluxMetricReporterOptions extends ScheduledMetricReporterOptions {
-  /**
-   * A logger instance used to report errors.
-   *
-   * @type {(Logger | null)}
-   * @memberof InfluxMetricReporterOptions
-   */
   log: Logger | null
-  /**
-   * A sender implementation used to send metrics to influx DB server.
-   *
-   * @type {Sender}
-   * @memberof InfluxMetricReporterOptions
-   */
   readonly sender: Sender
 }
 
-/**
- * InfluxDB reporter implementation.
- *
- * @export
- * @class InfluxMetricReporter
- * @extends {ScheduledMetricReporter}
- */
 export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricReporterOptions, MeasurementPoint> {
-  /**
-   * Metadata for the logger.
-   *
-   * @private
-   * @type {*}
-   * @memberof InfluxMetricReporter
-   */
   private readonly logMetadata: any
 
-  /**
-   * Creates an instance of InfluxMetricReporter.
-   *
-   * @param {string} [reporterType] the type of the reporter implementation - for internal use
-   * @memberof InfluxMetricReporter
-   */
   public constructor({
     sender,
     log = console,
@@ -166,44 +81,19 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Gets the logger instance.
-   *
-   * @returns {Logger}
-   * @memberof InfluxMetricReporter
-   */
   public getLog(): Logger {
     return this.options.log
   }
 
-  /**
-   * Sets the logger instance.
-   *
-   * @param {(Logger | null)} log
-   * @memberof InfluxMetricReporter
-   */
   public setLog(log: Logger | null): void {
     this.options.log = log
   }
 
-  /**
-   * Starts the sender and calls the super method to start scheduling.
-   *
-   * @returns {Promise<this>}
-   * @memberof ScheduledMetricReporter
-   */
   public async start(): Promise<this> {
     await this.options.sender.init()
     return await super.start()
   }
 
-  /**
-   * Sends an event directly to influxdb.
-   *
-   * @param {TEvent} event
-   * @returns {Promise<TEvent>}
-   * @memberof InfluxMetricReporter
-   */
   public async reportEvent<TEventData, TEvent extends Event<TEventData>>(event: TEvent): Promise<TEvent> {
     if (!(await this.options.sender.isReady())) {
       throw new Error("Sender is not ready. Wait for the 'start' method to complete.")
@@ -243,12 +133,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Reports the data points for each registered {@link MetricRegistry}.
-   *
-   * @protected
-   * @memberof InfluxMetricReporter
-   */
   protected async report(): Promise<OverallReportContext> {
     const senderReady = await this.options.sender.isReady()
     if (senderReady) {
@@ -257,18 +141,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     return {}
   }
 
-  /**
-   * Uses the sender to report the given data points.
-   *
-   * @protected
-   * @param {OverallReportContext} ctx
-   * @param {MetricRegistry | null} registry
-   * @param {Date} date
-   * @param {MetricType} type
-   * @param {Array<ReportingResult<any, T>>} results
-   * @returns {Promise<any>}
-   * @memberof InfluxMetricReporter
-   */
   protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
@@ -300,15 +172,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds a measure point (type T) instance for the given {@link Counter} or  {@link MonotoneCounter}.
-   *
-   * @protected
-   * @param {(MonotoneCounter | Counter)} counter
-   * @param {(MetricSetReportContext<MonotoneCounter | Counter>)} ctx
-   * @returns {T}
-   * @memberof InfluxMetricReporter
-   */
   protected reportCounter(
     counter: MonotoneCounter | Counter,
     ctx: MetricSetReportContext<MonotoneCounter | Counter>): MeasurementPoint {
@@ -330,15 +193,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds a measure point (type T) instance for the given {@link Gauge}.
-   *
-   * @protected
-   * @param {Gauge<any>} gauge
-   * @param {MetricSetReportContext<Gauge<any>>} ctx
-   * @returns {T}
-   * @memberof InfluxMetricReporter
-   */
   protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): MeasurementPoint {
     const value = gauge.getValue()
     if (!value || isNaN(value)) {
@@ -358,15 +212,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds a measure point (type T) instance for the given {@link Histogram}.
-   *
-   * @protected
-   * @param {Histogram} histogram
-   * @param {MetricSetReportContext<Histogram>} ctx
-   * @returns {T}
-   * @memberof InfluxMetricReporter
-   */
   protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): MeasurementPoint {
     const value = histogram.getCount()
     if (!value || isNaN(value)) {
@@ -397,15 +242,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds a measure point (type T) instance for the given {@link Meter}.
-   *
-   * @protected
-   * @param {Meter} meter
-   * @param {MetricSetReportContext<Meter>} ctx
-   * @returns {T}
-   * @memberof InfluxMetricReporter
-   */
   protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): MeasurementPoint {
     const value = meter.getCount()
     if (!value || isNaN(value)) {
@@ -429,15 +265,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds a measure point (type T) instance for the given {@link Timer}.
-   *
-   * @protected
-   * @param {Timer} timer
-   * @param {MetricSetReportContext<Timer>} ctx
-   * @returns {T}
-   * @memberof InfluxMetricReporter
-   */
   protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): MeasurementPoint {
     const value = timer.getCount()
     if (!value || isNaN(value)) {
@@ -472,14 +299,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     }
   }
 
-  /**
-   * Builds the prefix for a field name.
-   *
-   * @private
-   * @param {Metric} metric
-   * @returns {string}
-   * @memberof InfluxMetricReporter
-   */
   private getFieldNamePrefix(metric: Metric): string {
     if (metric.getGroup()) {
       return `${metric.getName()}.`
@@ -487,14 +306,6 @@ export class InfluxMetricReporter extends ScheduledMetricReporter<InfluxMetricRe
     return ''
   }
 
-  /**
-   * Builds the prefix for the metric name.
-   *
-   * @private
-   * @param {Metric} metric
-   * @returns {string}
-   * @memberof InfluxMetricReporter
-   */
   private getMeasurementName(metric: Metric): string {
     if (metric.getGroup()) {
       return metric.getGroup()

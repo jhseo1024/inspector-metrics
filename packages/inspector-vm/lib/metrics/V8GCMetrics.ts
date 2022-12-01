@@ -11,91 +11,18 @@ import {
   Timer
 } from 'inspector-metrics'
 
-/**
- * Event emitter for GC event within nodejs.
- */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const GC = require('gc-stats')
 
-/**
- * Metric set with values related to nodejs GC.
- *
- * @export
- * @class V8GCMetrics
- * @extends {BaseMetric}
- * @implements {MetricSet}
- */
 export class V8GCMetrics extends BaseMetric implements MetricSet {
-  /**
-   * Contains all the metrics in this metric-set.
-   *
-   * @private
-   * @type {Metric[]}
-   * @memberof V8GCMetrics
-   */
   private readonly metrics: Metric[] = []
-
-  /**
-   * Timer for the gc minor runs.
-   *
-   * @private
-   * @type {Timer}
-   * @memberof V8GCMetrics
-   */
   private readonly minorRuns: Timer
-  
-  /**
-   * Timer for the gc major runs.
-   *
-   * @private
-   * @type {Timer}
-   * @memberof V8GCMetrics
-   */
   private readonly majorRuns: Timer
-  
-  /**
-   * Timer for the gc incremental marking runs.
-   *
-   * @private
-   * @type {Timer}
-   * @memberof V8GCMetrics
-   */
   private readonly incrementalMarkingRuns: Timer
-  
-  /**
-   * Timer for the gc callback processing runs.
-   *
-   * @private
-   * @type {Timer}
-   * @memberof V8GCMetrics
-   */
   private readonly phantomCallbackProcessingRuns: Timer
-  
-  /**
-   * Timer for all gc runs.
-   *
-   * @private
-   * @type {Timer}
-   * @memberof V8GCMetrics
-   */
   private readonly allRuns: Timer
-  
-  /**
-   * Garbage collection data emitter.
-   *
-   * @private
-   * @type {EventEmitter}
-   * @memberof V8GCMetrics
-   */
   private readonly gc: EventEmitter
 
-  /**
-   * Creates an instance of V8GCMetrics.
-   *
-   * @param {string} name
-   * @param {Clock} clock
-   * @memberof V8GCMetrics
-   */
   public constructor(name: string, clock: Clock) {
     super()
 
@@ -148,44 +75,20 @@ export class V8GCMetrics extends BaseMetric implements MetricSet {
     })
   }
 
-  /**
-   * Stops the recording of gc metrics.
-   *
-   * @memberof V8GCMetrics
-   */
   public stop(): void {
     this.gc.removeAllListeners()
   }
 
-  /**
-   * Gets all metrics.
-   *
-   * @returns {Map<string, Metric>}
-   * @memberof V8GCMetrics
-   */
   public getMetrics(): Map<string, Metric> {
     const map: Map<string, Metric> = new Map()
     this.metrics.forEach((metric) => map.set(metric.getName(), metric))
     return map
   }
 
-  /**
-   * Gets all metrics.
-   *
-   * @returns {Metric[]}
-   * @memberof V8GCMetrics
-   */
   public getMetricList(): Metric[] {
     return this.metrics
   }
 
-  /**
-   * Sets the group of this metric-set as well as all contained metrics.
-   *
-   * @param {string} group
-   * @returns {this}
-   * @memberof V8GCMetrics
-   */
   public setGroup(group: string): this {
     this.group = group
     this.allRuns.setGroup(group)
@@ -196,14 +99,6 @@ export class V8GCMetrics extends BaseMetric implements MetricSet {
     return this
   }
 
-  /**
-   * Sets the tags of this metric-set all contained metrics accordingly.
-   *
-   * @param {string} name
-   * @param {string} value
-   * @returns {this}
-   * @memberof V8GCMetrics
-   */
   public setTag(name: string, value: string): this {
     this.tagMap.set(name, value)
     this.allRuns.setTag(name, value)
@@ -214,13 +109,6 @@ export class V8GCMetrics extends BaseMetric implements MetricSet {
     return this
   }
 
-  /**
-   * Removes the specified tag from this metric-set and all contained metrics accordingly.
-   *
-   * @param {string} name
-   * @returns {this}
-   * @memberof V8GCMetrics
-   */
   public removeTag(name: string): this {
     this.tagMap.delete(name)
     this.allRuns.removeTag(name)

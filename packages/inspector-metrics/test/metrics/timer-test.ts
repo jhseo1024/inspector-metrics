@@ -7,9 +7,9 @@ import * as chai from 'chai'
 import { suite, test } from '@testdeck/mocha'
 
 import { Buckets } from '../../lib/metrics'
-import { SlidingWindowReservoir } from '../../lib/metrics/model/reservoir'
-import { Snapshot } from '../../lib/metrics/model/snapshot'
-import { MICROSECOND, NANOSECOND } from '../../lib/metrics/model/time-unit'
+import { SlidingWindowReservoir } from '../../lib/metrics/Models/reservoir'
+import { Snapshot } from '../../lib/metrics/Models/snapshot'
+import { MICROSECOND, NANOSECOND } from '../../lib/metrics/Models/time-unit'
 import { StopWatch, Timer } from '../../lib/metrics/timer'
 import { MockedClock } from './mocked-clock'
 

@@ -16,7 +16,7 @@ import {
     getMetricTags,
     isSerializableMetric,
     Metric,
-} from "../../../lib/metrics/model/metric";
+} from "../../../lib/metrics/Models/metric";
 
 const expect = chai.expect;
 

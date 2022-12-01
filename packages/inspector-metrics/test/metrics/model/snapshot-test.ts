@@ -6,7 +6,7 @@ import "source-map-support/register";
 import * as chai from "chai";
 import { suite, test } from "@testdeck/mocha";
 
-import { SimpleSnapshot } from "../../../lib/metrics/model/snapshot";
+import { SimpleSnapshot } from "../../../lib/metrics/Models/snapshot";
 
 const expect = chai.expect;
 

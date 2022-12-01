@@ -8,7 +8,7 @@ import { suite, test } from '@testdeck/mocha'
 
 import { Buckets } from '../../lib/metrics'
 import { Histogram } from '../../lib/metrics/histogram'
-import { DefaultReservoir } from '../../lib/metrics/model/reservoir'
+import { DefaultReservoir } from '../../lib/metrics/Models/reservoir'
 
 const expect = chai.expect
 

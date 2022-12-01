@@ -24,16 +24,9 @@ import {
   Timer
 } from 'inspector-metrics'
 
-/**
- * Interface for getting a certain information using the specified metric metadata -
- * e.g. name of the index, metric type, etc.
- */
 export type MetricInfoDeterminator =
   (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => string
 
-/**
- * Interface for building a document for a metric.
- */
 export type MetricDocumentBuilder = (
   registry: MetricRegistry,
   metric: Metric,
@@ -41,77 +34,19 @@ export type MetricDocumentBuilder = (
   date: Date,
   tags: Tags) => {}
 
-/**
- * Options for {@link ElasticsearchMetricReporter}.
- *
- * @export
- * @interface ElasticsearchMetricReporterOption
- * @extends {ScheduledMetricReporterOptions}
- */
 export interface ElasticsearchMetricReporterOption extends ScheduledMetricReporterOptions {
-  /**
-   * Elasticsearch client options.
-   *
-   * @memberof ElasticsearchMetricReporterOption
-   */
   readonly clientOptions: {}
-  /**
-   * Logger instance used to report errors.
-   *
-   * @type {Logger}
-   * @memberof ElasticsearchMetricReporterOption
-   */
   log?: Logger
-  /**
-   * Used to get the name of the index.
-   *
-   * @type {MetricInfoDeterminator}
-   * @memberof ElasticsearchMetricReporterOption
-   */
   readonly indexnameDeterminator?: MetricInfoDeterminator
-  /**
-   * Used to get the type of the metric instance.
-   *
-   * @type {MetricInfoDeterminator}
-   * @memberof ElasticsearchMetricReporterOption
-   */
   readonly typeDeterminator?: MetricInfoDeterminator
-  /**
-   * Used to build the document for a metric.
-   *
-   * @type {MetricDocumentBuilder}
-   * @memberof ElasticsearchMetricReporterOption
-   */
   readonly metricDocumentBuilder?: MetricDocumentBuilder
 }
 
-/**
- * A MetricReporter extension used to publish metric values to elasticsearch.
- *
- * @export
- * @class ElasticsearchMetricReporter
- * @extends {MetricReporter}
- */
 export class ElasticsearchMetricReporter extends ScheduledMetricReporter<ElasticsearchMetricReporterOption, Array<{}>> {
-  /**
-   * Returns a {@link MetricInfoDeterminator} that returns 'metric' as type.
-   *
-   * @static
-   * @returns {MetricInfoDeterminator}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static defaultTypeDeterminator(): MetricInfoDeterminator {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => 'metric'
   }
 
-  /**
-   * Returns a {@link MetricInfoDeterminator} that returns an indexname like '<baseName>-yyyy-mm-dd'.
-   *
-   * @static
-   * @param {string} baseName The
-   * @returns {MetricInfoDeterminator}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static dailyIndex(baseName: string): MetricInfoDeterminator {
     return (registry: MetricRegistry, metric: Metric, type: MetricType, date: Date) => {
       const day = date.getDate()
@@ -122,29 +57,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     }
   }
 
-  /**
-   * Returns a {@link MetricDocumentBuilder} that builds an object for a metric like this:
-   *
-   * {
-   *
-   *  name: ..., // name of metric
-   *
-   *  group: ..., // group of metric
-   *
-   *  timestamp: ..., // timestamp from parameter
-   *
-   *  tags: ..., // combined tags from this reporter and the metric
-   *
-   *  values..., // metric specific values
-   *
-   *  type..., // metric type
-   *
-   * }
-   *
-   * @static
-   * @returns {MetricDocumentBuilder}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static defaultDocumentBuilder(): MetricDocumentBuilder {
     return (
       registry: MetricRegistry,
@@ -178,14 +90,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     }
   }
 
-  /**
-   * Gets the values for the specified monotone counter metric.
-   *
-   * @static
-   * @param {MonotoneCounter} counter
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getMonotoneCounterValues(counter: MonotoneCounter): {} {
     const count = counter.getCount()
     if (!count || isNaN(count)) {
@@ -194,14 +98,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return { count }
   }
 
-  /**
-   * Gets the values for the specified counter metric.
-   *
-   * @static
-   * @param {Counter} counter
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getCounterValues(counter: Counter): {} {
     const count = counter.getCount()
     if (!count || isNaN(count)) {
@@ -210,14 +106,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return { count }
   }
 
-  /**
-   * Gets the values for the specified {Gauge} metric.
-   *
-   * @static
-   * @param {Gauge<any>} gauge
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getGaugeValue(gauge: Gauge<any>): {} {
     const value = gauge.getValue()
     if ((!value && value !== 0) || Number.isNaN(value)) {
@@ -229,14 +117,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return { value }
   }
 
-  /**
-   * Gets the values for the specified {Histogram} metric.
-   *
-   * @static
-   * @param {Histogram} histogram
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getHistogramValues(histogram: Histogram): {} {
     const value = histogram.getCount()
     if (!value || isNaN(value)) {
@@ -260,14 +140,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return values
   }
 
-  /**
-   * Gets the values for the specified {Meter} metric.
-   *
-   * @static
-   * @param {Meter} meter
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getMeterValues(meter: Meter): {} {
     const value = meter.getCount()
     if (!value || isNaN(value)) {
@@ -284,14 +156,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return values
   }
 
-  /**
-   * Gets the values for the specified {Timer} metric.
-   *
-   * @static
-   * @param {Timer} timer
-   * @returns {{}}
-   * @memberof ElasticsearchMetricReporter
-   */
   public static getTimerValues(timer: Timer): {} {
     const value = timer.getCount()
     if (!value || isNaN(value)) {
@@ -319,14 +183,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return values
   }
 
-  /**
-   * Either gets 0 or the specified value.
-   *
-   * @private
-   * @param {number} value
-   * @returns {number}
-   * @memberof ElasticsearchMetricReporter
-   */
   private static getNumber(value: number): number {
     if (isNaN(value)) {
       return 0
@@ -334,29 +190,9 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return value
   }
 
-  /**
-   * Metadata for the logger.
-   *
-   * @private
-   * @type {*}
-   * @memberof ElasticsearchMetricReporter
-   */
   private readonly logMetadata: any
-  
-  /**
-   * Elasticsearch client used to do reporting.
-   *
-   * @private
-   * @type {Client}
-   * @memberof ElasticsearchMetricReporter
-   */
   private readonly client: Client
 
-  /**
-   * Creates an instance of ElasticsearchMetricReporter.
-   *
-   * @param {string} [reporterType] the type of the reporter implementation - for internal use
-   */
   public constructor(
     {
       clientOptions,
@@ -397,33 +233,14 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     this.client = new Client(clientOptions)
   }
 
-  /**
-   * Gets the logger instance.
-   *
-   * @returns {Logger}
-   * @memberof ElasticsearchMetricReporter
-   */
   public getLog(): Logger {
     return this.options.log
   }
 
-  /**
-   * Sets the logger instance.
-   *
-   * @param {Logger} log
-   * @memberof ElasticsearchMetricReporter
-   */
   public setLog(log: Logger): void {
     this.options.log = log
   }
 
-  /**
-   * Reports an {@link Event}.
-   *
-   * @param {TEvent} event
-   * @returns {Promise<TEvent>}
-   * @memberof ElasticsearchMetricReporter
-   */
   public async reportEvent<TEventData, TEvent extends Event<TEventData>>(event: TEvent): Promise<TEvent> {
     const result = this.reportGauge(event, {
       date: event.getTime(),
@@ -443,27 +260,10 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return event
   }
 
-  /**
-   * Does nothing
-   *
-   * @returns {Promise<void>}
-   * @memberof ElasticsearchMetricReporter
-   */
   public async flushEvents(): Promise<void> {
+    // Do nothing.
   }
 
-  /**
-   * Send the combinations of index and document to the elasticsearch cluster
-   * using the bulk method of the elasticsearch client.
-   *
-   * @protected
-   * @param {MetricRegistry | null} registry
-   * @param {Date} date
-   * @param {MetricType} type
-   * @param {Array<ReportingResult<any, any[]>>} results
-   * @returns {Promise<void>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected async handleResults(
     ctx: OverallReportContext,
     registry: MetricRegistry | null,
@@ -497,16 +297,6 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     }
   }
 
-  /**
-   * Generalized reporting method of all types of metric instances.
-   * Builds the index configuration document and the metric document.
-   *
-   * @protected
-   * @param {Metric} metric
-   * @param {ReportingContext<Metric>} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportMetric(
     metric: Metric, ctx: MetricSetReportContext<Metric>): Array<{}> {
     const document = this.options.metricDocumentBuilder(
@@ -522,68 +312,23 @@ export class ElasticsearchMetricReporter extends ScheduledMetricReporter<Elastic
     return []
   }
 
-  /**
-   * Calls {@link #reportMetric} with the specified arguments.
-   *
-   * @protected
-   * @param {(MonotoneCounter | Counter)} counter
-   * @param {(ReportingContext<MonotoneCounter | Counter>)} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportCounter(
     counter: MonotoneCounter | Counter, ctx: MetricSetReportContext<MonotoneCounter | Counter>): Array<{}> {
     return this.reportMetric(counter, ctx)
   }
 
-  /**
-   * Calls {@link #reportMetric} with the specified arguments.
-   *
-   * @protected
-   * @param {Gauge<any>} gauge
-   * @param {ReportingContext<Gauge<any>>} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportGauge(gauge: Gauge<any>, ctx: MetricSetReportContext<Gauge<any>>): Array<{}> {
     return this.reportMetric(gauge, ctx)
   }
 
-  /**
-   * Calls {@link #reportMetric} with the specified arguments.
-   *
-   * @protected
-   * @param {Histogram} histogram
-   * @param {ReportingContext<Histogram>} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportHistogram(histogram: Histogram, ctx: MetricSetReportContext<Histogram>): Array<{}> {
     return this.reportMetric(histogram, ctx)
   }
 
-  /**
-   * Calls {@link #reportMetric} with the specified arguments.
-   *
-   * @protected
-   * @param {Meter} meter
-   * @param {ReportingContext<Meter>} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportMeter(meter: Meter, ctx: MetricSetReportContext<Meter>): Array<{}> {
     return this.reportMetric(meter, ctx)
   }
 
-  /**
-   * Calls {@link #reportMetric} with the specified arguments.
-   *
-   * @protected
-   * @param {Timer} timer
-   * @param {ReportingContext<Timer>} ctx
-   * @returns {Array<{}>}
-   * @memberof ElasticsearchMetricReporter
-   */
   protected reportTimer(timer: Timer, ctx: MetricSetReportContext<Timer>): Array<{}> {
     return this.reportMetric(timer, ctx)
   }

@@ -6,8 +6,8 @@ import "source-map-support/register";
 import * as chai from "chai";
 import { suite, test } from "@testdeck/mocha";
 
-import { ExponentiallyWeightedMovingAverage } from "../../../lib/metrics/model/moving-average";
-import { MILLISECOND } from "../../../lib/metrics/model/time-unit";
+import { ExponentiallyWeightedMovingAverage } from "../../../lib/metrics/Models/moving-average";
+import { MILLISECOND } from "../../../lib/metrics/Models/time-unit";
 
 const expect = chai.expect;
 

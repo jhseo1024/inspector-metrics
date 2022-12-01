@@ -6,54 +6,15 @@ import {
   MetricSet,
   SimpleGauge
 } from 'inspector-metrics'
+
 import * as v8 from 'v8'
 
-/**
- * A collection of {@link SimpleGauge} values for space metrics.
- *
- * @export
- * @class SpaceHistory
- */
 export class SpaceHistory {
-  /**
-   * Total size.
-   *
-   * @type {SimpleGauge}
-   * @memberof SpaceHistory
-   */
   public size: SimpleGauge
-  
-  /**
-   * Used size.
-   *
-   * @type {SimpleGauge}
-   * @memberof SpaceHistory
-   */
   public usedSize: SimpleGauge
-  
-  /**
-   * Available size.
-   *
-   * @type {SimpleGauge}
-   * @memberof SpaceHistory
-   */
   public availableSize: SimpleGauge
-  
-  /**
-   * Physical size.
-   *
-   * @type {SimpleGauge}
-   * @memberof SpaceHistory
-   */
   public physicalSize: SimpleGauge
 
-  /**
-   * Creates an instance of SpaceHistory.
-   *
-   * @param {string} spaceName
-   * @param {Metric[]} metrics
-   * @memberof SpaceHistory
-   */
   public constructor(spaceName: string, metrics: Metric[]) {
     this.size = new SimpleGauge('spaceSize')
     this.usedSize = new SimpleGauge('spaceUsedSize')
@@ -72,121 +33,19 @@ export class SpaceHistory {
   }
 }
 
-/**
- * Metric set with values related to the memory nodejs uses.
- *
- * @export
- * @class V8MemoryMetrics
- * @extends {BaseMetric}
- * @implements {MetricSet}
- */
 export class V8MemoryMetrics extends BaseMetric implements MetricSet {
-  /**
-   * Contains all the metrics in this metric-set.
-   *
-   * @private
-   * @type {Metric[]}
-   * @memberof V8MemoryMetrics
-   */
   private readonly metrics: Metric[] = []
-  
-  /**
-   * Stores the size gauges for different specs.
-   *
-   * @private
-   * @type {Map<string, SpaceHistory>}
-   * @memberof V8MemoryMetrics
-   */
   private readonly spaces: Map<string, SpaceHistory> = new Map()
-  
-  /**
-   * Total heap size.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly totalHeapSize: SimpleGauge = new SimpleGauge('totalHeapSize')
-  
-  /**
-   * Total available size.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly totalAvailableSize: SimpleGauge = new SimpleGauge('totalAvailableSize')
-  
-  /**
-   * Total physical size.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly totalPhysicalSize: SimpleGauge = new SimpleGauge('totalPhysicalSize')
-  
-  /**
-   * Total heap size for executable code.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly totalHeapSizeExecutable: SimpleGauge = new SimpleGauge('totalHeapSizeExecutable')
-  
-  /**
-   * Used heap size.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly usedHeapSize: SimpleGauge = new SimpleGauge('usedHeapSize')
-  
-  /**
-   * Maximum heap size.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly heapSizeLimit: SimpleGauge = new SimpleGauge('heapSizeLimit')
-  
-  /**
-   * Allocated memory.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly mallocedMemory: SimpleGauge = new SimpleGauge('mallocedMemory')
-  
-  /**
-   * Maximum allocated memory.
-   *
-   * @private
-   * @type {SimpleGauge}
-   * @memberof V8MemoryMetrics
-   */
   private readonly peakMallocedMemory: SimpleGauge = new SimpleGauge('peakMallocedMemory')
-  
-  /**
-   * The timer reference from the scheduler.
-   *
-   * @private
-   * @type {NodeJS.Timer}
-   * @memberof V8MemoryMetrics
-   */
   private readonly intervalRef: NodeJS.Timer
-  
-  /**
-   * Creates an instance of V8MemoryMetrics.
-   *
-   * @param {string} name
-   * @param {number} [sampleRate=1000]
-   * @memberof V8MemoryMetrics
-   */
+
   public constructor(name: string, sampleRate = 1000) {
     super()
 
@@ -232,44 +91,20 @@ export class V8MemoryMetrics extends BaseMetric implements MetricSet {
     }, sampleRate)
   }
 
-  /**
-   * Stops the recording of memory metrics.
-   *
-   * @memberof V8MemoryMetrics
-   */
   public stop(): void {
     this.intervalRef.unref()
   }
 
-  /**
-   * Gets all metrics.
-   *
-   * @returns {Map<string, Metric>}
-   * @memberof V8MemoryMetrics
-   */
   public getMetrics(): Map<string, Metric> {
     const map: Map<string, Metric> = new Map()
     this.metrics.forEach((metric) => map.set(metric.getName(), metric))
     return map
   }
 
-  /**
-   * Gets all metrics.
-   *
-   * @returns {Metric[]}
-   * @memberof V8MemoryMetrics
-   */
   public getMetricList(): Metric[] {
     return this.metrics
   }
 
-  /**
-   * Sets the group of this metric-set as well as all contained metrics.
-   *
-   * @param {string} group
-   * @returns {this}
-   * @memberof V8MemoryMetrics
-   */
   public setGroup(group: string): this {
     this.group = group
 
@@ -292,14 +127,6 @@ export class V8MemoryMetrics extends BaseMetric implements MetricSet {
     return this
   }
 
-  /**
-   * Sets the tags of this metric-set all contained metrics accordingly.
-   *
-   * @param {string} name
-   * @param {string} value
-   * @returns {this}
-   * @memberof V8MemoryMetrics
-   */
   public setTag(name: string, value: string): this {
     this.tagMap.set(name, value)
 
@@ -322,12 +149,6 @@ export class V8MemoryMetrics extends BaseMetric implements MetricSet {
     return this
   }
 
-  /**
-   * Removes the specified tag from this metric-set and all contained metrics accordingly.
-   *
-   * @param {string} name
-   * @memberof V8MemoryMetrics
-   */
   public removeTag(name: string): this {
     this.tagMap.delete(name)
 
